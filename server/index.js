@@ -44,11 +44,13 @@ async function start() {
 
   // Init DB schema after server is up
   try {
-    const schema = fs.readFileSync(path.join(__dirname, 'db/schema.sql'), 'utf8');
+    const raw = fs.readFileSync(path.join(__dirname, 'db/schema.sql'), 'utf8');
+    // Strip comment lines first, then split into statements
+    const schema = raw.split('\n').filter(l => !l.trim().startsWith('--')).join('\n');
     const statements = schema
       .split(';')
       .map(s => s.trim())
-      .filter(s => s.length > 0 && !s.startsWith('--'));
+      .filter(s => s.length > 0);
     for (const stmt of statements) {
       await pool.query(stmt);
     }
