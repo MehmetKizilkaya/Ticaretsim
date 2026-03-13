@@ -36,6 +36,13 @@ require('./socket/chat')(io);
 
 // ── DB init + start ────────────────────────────────────────
 async function start() {
+  // Start listening first so healthcheck passes immediately
+  const PORT = process.env.PORT || 3000;
+  server.listen(PORT, () => {
+    console.log(`🚛 Ticaretsim running → http://localhost:${PORT}`);
+  });
+
+  // Init DB schema after server is up
   try {
     const schema = fs.readFileSync(path.join(__dirname, 'db/schema.sql'), 'utf8');
     const statements = schema
@@ -49,11 +56,6 @@ async function start() {
   } catch (e) {
     console.error('DB schema error:', e.message);
   }
-
-  const PORT = process.env.PORT || 3000;
-  server.listen(PORT, () => {
-    console.log(`🚛 Ticaretsim running → http://localhost:${PORT}`);
-  });
 }
 
 start();
