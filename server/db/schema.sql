@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS transactions (
 
 -- Leaderboard index
 CREATE INDEX IF NOT EXISTS idx_saves_money
-  ON game_saves ((game_state->>'money')::numeric DESC);
+  ON game_saves (CAST(game_state->>'money' AS numeric) DESC);
 
 -- Recent chat index
 CREATE INDEX IF NOT EXISTS idx_chat_created

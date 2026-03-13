@@ -38,7 +38,13 @@ require('./socket/chat')(io);
 async function start() {
   try {
     const schema = fs.readFileSync(path.join(__dirname, 'db/schema.sql'), 'utf8');
-    await pool.query(schema);
+    const statements = schema
+      .split(';')
+      .map(s => s.trim())
+      .filter(s => s.length > 0 && !s.startsWith('--'));
+    for (const stmt of statements) {
+      await pool.query(stmt);
+    }
     console.log('✓ Database schema OK');
   } catch (e) {
     console.error('DB schema error:', e.message);
