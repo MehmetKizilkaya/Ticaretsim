@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>TicaretSim — Liderboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#1a1a2e;color:#e0e0e0;min-height:100vh}
+header{background:#16213e;border-bottom:2px solid #0f3460;padding:14px 24px;display:flex;align-items:center;gap:16px}
+header .logo{font-size:20px;font-weight:800;color:#e94560;letter-spacing:2px}
+header nav a{color:#888;text-decoration:none;font-size:13px;margin-left:16px;transition:color .2s}
+header nav a:hover{color:#4ecca3}
+header .spacer{flex:1}
+header .online{font-size:12px;color:#4ecca3;background:#0f3460;padding:4px 10px;border-radius:10px}
+.container{max-width:800px;margin:40px auto;padding:0 16px}
+h1{font-size:22px;font-weight:700;margin-bottom:6px}
+h1 span{color:#e94560}
+.subtitle{font-size:13px;color:#888;margin-bottom:24px}
+.refresh-bar{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.refresh-bar span{font-size:12px;color:#888}
+.refresh-bar .next{color:#4ecca3}
+.table-wrap{background:#16213e;border:1px solid #0f3460;border-radius:10px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{background:#0f3460;padding:12px 16px;text-align:left;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px}
+td{padding:12px 16px;border-bottom:1px solid #0d1117;font-size:14px}
+tr:last-child td{border-bottom:none}
+tr.me td{background:#0f3460;color:#4ecca3;font-weight:600}
+tr:hover td{background:#1a2744}
+.rank{font-weight:700;font-size:16px;color:#888;text-align:center}
+.rank.gold{color:#ffd700}
+.rank.silver{color:#c0c0c0}
+.rank.bronze{color:#cd7f32}
+.money-cell{font-weight:700;color:#4ecca3;font-size:15px}
+.time-cell{font-size:12px;color:#666}
+.empty{text-align:center;padding:48px;color:#555;font-style:italic}
+.back-btn{display:inline-block;margin-top:20px;color:#4ecca3;text-decoration:none;font-size:13px}
+.back-btn:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">TICARETSIM</span>
+  <nav>
+    <a href="/game">🎮 Oyun</a>
+    <a href="/leaderboard">🏆 Liderboard</a>
+  </nav>
+  <div class="spacer"></div>
+  <span class="online" id="player-count">— çevrimiçi</span>
+</header>
+
+<div class="container">
+  <h1>🏆 <span>Liderboard</span></h1>
+  <p class="subtitle">En zengin tüccarlar — Türkiye'nin ticaret şampiyonları</p>
+
+  <div class="refresh-bar">
+    <span>Son güncelleme: <span id="last-update">—</span></span>
+    <span>| Yenileniyor: <span class="next" id="countdown">60</span>s</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:60px">Sıra</th>
+          <th>Kullanıcı</th>
+          <th>Servet</th>
+          <th>Son Görülme</th>
+        </tr>
+      </thead>
+      <tbody id="lb-body">
+        <tr><td colspan="4" class="empty">Yükleniyor...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <a href="/game" class="back-btn">← Oyuna Dön</a>
+</div>
+
+<script>
+const myUser = JSON.parse(localStorage.getItem('ts_user') || 'null');
+let countdown = 60;
+
+function fmt(n) {
+  return Math.round(n).toLocaleString('tr-TR') + ' TL';
+}
+
+function relTime(iso) {
+  const diff = (Date.now() - new Date(iso)) / 1000;
+  if (diff < 60)  return 'Az önce';
+  if (diff < 3600) return Math.floor(diff/60) + ' dk önce';
+  if (diff < 86400) return Math.floor(diff/3600) + ' sa önce';
+  return Math.floor(diff/86400) + ' gün önce';
+}
+
+async function load() {
+  try {
+    const res  = await fetch('/api/leaderboard');
+    const data = await res.json();
+    const body = document.getElementById('lb-body');
+
+    if (!data.length) {
+      body.innerHTML = '<tr><td colspan="4" class="empty">Henüz kayıtlı oyuncu yok.</td></tr>';
+      return;
+    }
+
+    body.innerHTML = data.map(r => {
+      const isMe = myUser && r.id === myUser.id;
+      const rankClass = r.rank===1?'gold':r.rank===2?'silver':r.rank===3?'bronze':'';
+      const medal = r.rank===1?'🥇':r.rank===2?'🥈':r.rank===3?'🥉':'';
+      return `<tr${isMe?' class="me"':''}>
+        <td class="rank ${rankClass}">${medal||r.rank}</td>
+        <td>${isMe?'★ ':''}${r.username}${isMe?' (Sen)':''}</td>
+        <td class="money-cell">${fmt(r.money)}</td>
+        <td class="time-cell">${relTime(r.updated_at)}</td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('last-update').textContent = new Date().toLocaleTimeString('tr-TR');
+    countdown = 60;
+  } catch {
+    document.getElementById('lb-body').innerHTML =
+      '<tr><td colspan="4" class="empty">Bağlantı hatası.</td></tr>';
+  }
+}
+
+// Countdown timer
+setInterval(() => {
+  countdown--;
+  document.getElementById('countdown').textContent = countdown;
+  if (countdown <= 0) load();
+}, 1000);
+
+load();
+</script>
+</body>
+</html>

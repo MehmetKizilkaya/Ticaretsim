@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed 's/\"\" .*//')",
+      "Bash(python build_game.py)",
+      "Bash(start \"\" \"c:/Users/Mehmet Kemal Pasha/Desktop/Ticaretsim/game.html\")",
+      "Bash(npm install)",
+      "Bash(ls \"c:\\\\Users\\\\Mehmet Kemal Pasha\\\\Desktop\\\\Ticaretsim\\\\public\"\" && echo \"---\" && ls \"c:UsersMehmet Kemal PashaDesktopTicaretsim\"\")",
+      "Bash(\"/c/Users/Mehmet Kemal:*)"
+    ]
+  }
+}

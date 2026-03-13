@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>TicaretSim — Giriş</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#1a1a2e;color:#e0e0e0;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.bg-pattern{position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%, #0f3460 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, #16213e 0%, transparent 40%);pointer-events:none}
+.card{position:relative;background:#16213e;border:1px solid #0f3460;border-radius:12px;padding:40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.logo{text-align:center;margin-bottom:32px}
+.logo h1{font-size:28px;font-weight:800;color:#e94560;letter-spacing:3px}
+.logo p{font-size:13px;color:#888;margin-top:6px}
+.tabs{display:flex;border-bottom:2px solid #0f3460;margin-bottom:24px}
+.tab{flex:1;padding:10px;text-align:center;cursor:pointer;font-size:14px;font-weight:600;color:#888;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.tab.active{color:#e94560;border-bottom-color:#e94560}
+.form{display:none;flex-direction:column;gap:14px}
+.form.active{display:flex}
+.field label{display:block;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.field input{width:100%;background:#0d1117;border:1px solid #0f3460;color:#fff;padding:11px 14px;border-radius:6px;font-size:14px;transition:border .2s;outline:none}
+.field input:focus{border-color:#4ecca3}
+.field input.error{border-color:#e94560}
+.error-msg{font-size:12px;color:#e94560;min-height:16px}
+.btn-submit{padding:13px;background:#e94560;border:none;color:#fff;font-size:15px;font-weight:700;border-radius:6px;cursor:pointer;transition:background .2s;letter-spacing:1px;margin-top:4px}
+.btn-submit:hover{background:#c73652}
+.btn-submit:disabled{background:#555;cursor:not-allowed}
+.divider{text-align:center;color:#555;font-size:12px;margin:4px 0}
+.leaderboard-link{text-align:center;margin-top:16px;font-size:13px;color:#888}
+.leaderboard-link a{color:#4ecca3;text-decoration:none}
+.leaderboard-link a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="bg-pattern"></div>
+<div class="card">
+  <div class="logo">
+    <h1>TICARETSIM</h1>
+    <p>Türkiye'nin ticaret simülasyonu</p>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('login')">Giriş Yap</div>
+    <div class="tab" onclick="switchTab('register')">Kayıt Ol</div>
+  </div>
+
+  <!-- Login Form -->
+  <form id="form-login" class="form active" onsubmit="submitLogin(event)">
+    <div class="field">
+      <label>E-posta</label>
+      <input type="email" id="login-email" placeholder="ornek@mail.com" required/>
+    </div>
+    <div class="field">
+      <label>Şifre</label>
+      <input type="password" id="login-pass" placeholder="••••••••" required/>
+    </div>
+    <div class="error-msg" id="login-error"></div>
+    <button class="btn-submit" type="submit" id="btn-login">GİRİŞ YAP</button>
+  </form>
+
+  <!-- Register Form -->
+  <form id="form-register" class="form" onsubmit="submitRegister(event)">
+    <div class="field">
+      <label>Kullanıcı Adı</label>
+      <input type="text" id="reg-username" placeholder="tüccar_ali" maxlength="30" required/>
+    </div>
+    <div class="field">
+      <label>E-posta</label>
+      <input type="email" id="reg-email" placeholder="ornek@mail.com" required/>
+    </div>
+    <div class="field">
+      <label>Şifre (en az 6 karakter)</label>
+      <input type="password" id="reg-pass" placeholder="••••••••" required/>
+    </div>
+    <div class="error-msg" id="reg-error"></div>
+    <button class="btn-submit" type="submit" id="btn-register">KAYIT OL</button>
+  </form>
+
+  <div class="leaderboard-link">
+    <a href="/leaderboard">🏆 Liderboard'u Gör</a>
+  </div>
+</div>
+
+<script>
+// If already logged in, redirect to game
+const token = localStorage.getItem('ts_token');
+if (token) {
+  fetch('/api/auth/me', { headers: { Authorization: 'Bearer ' + token } })
+    .then(r => r.ok ? (window.location.href = '/game') : null)
+    .catch(() => {});
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t, i) =>
+    t.classList.toggle('active', (i === 0) === (tab === 'login')));
+  document.getElementById('form-login').classList.toggle('active', tab === 'login');
+  document.getElementById('form-register').classList.toggle('active', tab === 'register');
+  document.getElementById('login-error').textContent = '';
+  document.getElementById('reg-error').textContent = '';
+}
+
+async function submitLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-login');
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+  btn.disabled = true;
+  btn.textContent = 'Giriş yapılıyor...';
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email:    document.getElementById('login-email').value,
+        password: document.getElementById('login-pass').value,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error; return; }
+    localStorage.setItem('ts_token', data.token);
+    localStorage.setItem('ts_user', JSON.stringify(data.user));
+    window.location.href = '/game';
+  } catch {
+    errEl.textContent = 'Sunucuya bağlanılamadı.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'GİRİŞ YAP';
+  }
+}
+
+async function submitRegister(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-register');
+  const errEl = document.getElementById('reg-error');
+  errEl.textContent = '';
+  btn.disabled = true;
+  btn.textContent = 'Kayıt yapılıyor...';
+
+  try {
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: document.getElementById('reg-username').value,
+        email:    document.getElementById('reg-email').value,
+        password: document.getElementById('reg-pass').value,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error; return; }
+    localStorage.setItem('ts_token', data.token);
+    localStorage.setItem('ts_user', JSON.stringify(data.user));
+    window.location.href = '/game';
+  } catch {
+    errEl.textContent = 'Sunucuya bağlanılamadı.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'KAYIT OL';
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,562 @@
+{
+  "balikesir": {
+    "name": "Balıkesir",
+    "region": "Marmara",
+    "plate": 10,
+    "cx": 106.5,
+    "cy": 102.7
+  },
+  "bilecik": {
+    "name": "Bilecik",
+    "region": "Marmara",
+    "plate": 11,
+    "cx": 217.0,
+    "cy": 113.8
+  },
+  "canakkale": {
+    "name": "Çanakkale",
+    "region": "Marmara",
+    "plate": 17,
+    "cx": 53.0,
+    "cy": 104.1
+  },
+  "edirne": {
+    "name": "Edirne",
+    "region": "Marmara",
+    "plate": 22,
+    "cx": 60.9,
+    "cy": 26.1
+  },
+  "istanbul": {
+    "name": "İstanbul",
+    "region": "Marmara",
+    "plate": 34,
+    "cx": 161.9,
+    "cy": 62.3
+  },
+  "kirklareli": {
+    "name": "Kırklareli",
+    "region": "Marmara",
+    "plate": 39,
+    "cx": 75.1,
+    "cy": 36.6
+  },
+  "kocaeli": {
+    "name": "Kocaeli",
+    "region": "Marmara",
+    "plate": 41,
+    "cx": 230.3,
+    "cy": 87.8
+  },
+  "sakarya": {
+    "name": "Sakarya",
+    "region": "Marmara",
+    "plate": 54,
+    "cx": 246.6,
+    "cy": 74.6
+  },
+  "tekirdag": {
+    "name": "Tekirdağ",
+    "region": "Marmara",
+    "plate": 59,
+    "cx": 97.2,
+    "cy": 57.2
+  },
+  "yalova": {
+    "name": "Yalova",
+    "region": "Marmara",
+    "plate": 77,
+    "cx": 200.3,
+    "cy": 102.4
+  },
+  "ankara": {
+    "name": "Ankara",
+    "region": "Iç Anadolu",
+    "plate": 6,
+    "cx": 349.8,
+    "cy": 112.6
+  },
+  "cankiri": {
+    "name": "Çankırı",
+    "region": "Iç Anadolu",
+    "plate": 18,
+    "cx": 382.8,
+    "cy": 88.5
+  },
+  "eskisehir": {
+    "name": "Eskişehir",
+    "region": "Iç Anadolu",
+    "plate": 26,
+    "cx": 260.0,
+    "cy": 143.7
+  },
+  "kayseri": {
+    "name": "Kayseri",
+    "region": "Iç Anadolu",
+    "plate": 38,
+    "cx": 527.3,
+    "cy": 210.0
+  },
+  "kirsehir": {
+    "name": "Kırşehir",
+    "region": "Iç Anadolu",
+    "plate": 40,
+    "cx": 435.3,
+    "cy": 175.3
+  },
+  "konya": {
+    "name": "Konya",
+    "region": "Iç Anadolu",
+    "plate": 42,
+    "cx": 375.0,
+    "cy": 210.5
+  },
+  "nevsehir": {
+    "name": "Nevşehir",
+    "region": "Iç Anadolu",
+    "plate": 50,
+    "cx": 463.0,
+    "cy": 201.8
+  },
+  "nigde": {
+    "name": "Niğde",
+    "region": "Iç Anadolu",
+    "plate": 51,
+    "cx": 449.7,
+    "cy": 269.8
+  },
+  "sivas": {
+    "name": "Sivas",
+    "region": "Iç Anadolu",
+    "plate": 58,
+    "cx": 604.3,
+    "cy": 144.9
+  },
+  "yozgat": {
+    "name": "Yozgat",
+    "region": "Iç Anadolu",
+    "plate": 66,
+    "cx": 500.8,
+    "cy": 145.6
+  },
+  "aksaray": {
+    "name": "Aksaray",
+    "region": "Iç Anadolu",
+    "plate": 68,
+    "cx": 422.1,
+    "cy": 225.8
+  },
+  "karaman": {
+    "name": "Karaman",
+    "region": "Iç Anadolu",
+    "plate": 70,
+    "cx": 398.1,
+    "cy": 324.6
+  },
+  "kirikkale": {
+    "name": "Kırıkkale",
+    "region": "Iç Anadolu",
+    "plate": 71,
+    "cx": 411.0,
+    "cy": 148.9
+  },
+  "afyonkarahisar": {
+    "name": "Afyonkarahisar",
+    "region": "Ege",
+    "plate": 3,
+    "cx": 284.3,
+    "cy": 204.2
+  },
+  "aydin": {
+    "name": "Aydın",
+    "region": "Ege",
+    "plate": 9,
+    "cx": 124.1,
+    "cy": 271.7
+  },
+  "denizli": {
+    "name": "Denizli",
+    "region": "Ege",
+    "plate": 20,
+    "cx": 204.1,
+    "cy": 253.2
+  },
+  "izmir": {
+    "name": "İzmir",
+    "region": "Ege",
+    "plate": 35,
+    "cx": 60.8,
+    "cy": 223.8
+  },
+  "kutahya": {
+    "name": "Kütahya",
+    "region": "Ege",
+    "plate": 43,
+    "cx": 208.1,
+    "cy": 165.8
+  },
+  "manisa": {
+    "name": "Manisa",
+    "region": "Ege",
+    "plate": 45,
+    "cx": 75.1,
+    "cy": 200.9
+  },
+  "mugla": {
+    "name": "Muğla",
+    "region": "Ege",
+    "plate": 48,
+    "cx": 88.3,
+    "cy": 334.4
+  },
+  "usak": {
+    "name": "Uşak",
+    "region": "Ege",
+    "plate": 64,
+    "cx": 197.4,
+    "cy": 223.8
+  },
+  "adana": {
+    "name": "Adana",
+    "region": "Akdeniz",
+    "plate": 1,
+    "cx": 545.4,
+    "cy": 271.8
+  },
+  "antalya": {
+    "name": "Antalya",
+    "region": "Akdeniz",
+    "plate": 7,
+    "cx": 281.0,
+    "cy": 330.3
+  },
+  "burdur": {
+    "name": "Burdur",
+    "region": "Akdeniz",
+    "plate": 15,
+    "cx": 231.2,
+    "cy": 298.6
+  },
+  "hatay": {
+    "name": "Hatay",
+    "region": "Akdeniz",
+    "plate": 31,
+    "cx": 540.9,
+    "cy": 377.4
+  },
+  "isparta": {
+    "name": "Isparta",
+    "region": "Akdeniz",
+    "plate": 32,
+    "cx": 265.8,
+    "cy": 264.4
+  },
+  "mersin": {
+    "name": "Mersin",
+    "region": "Akdeniz",
+    "plate": 33,
+    "cx": 463.6,
+    "cy": 336.5
+  },
+  "kahramanmaras": {
+    "name": "Kahramanmaraş",
+    "region": "Akdeniz",
+    "plate": 46,
+    "cx": 604.1,
+    "cy": 256.9
+  },
+  "osmaniye": {
+    "name": "Osmaniye",
+    "region": "Akdeniz",
+    "plate": 80,
+    "cx": 548.0,
+    "cy": 316.4
+  },
+  "amasya": {
+    "name": "Amasya",
+    "region": "Karadeniz",
+    "plate": 5,
+    "cx": 520.2,
+    "cy": 95.5
+  },
+  "artvin": {
+    "name": "Artvin",
+    "region": "Karadeniz",
+    "plate": 8,
+    "cx": 837.1,
+    "cy": 50.5
+  },
+  "bolu": {
+    "name": "Bolu",
+    "region": "Karadeniz",
+    "plate": 14,
+    "cx": 334.9,
+    "cy": 88.9
+  },
+  "corum": {
+    "name": "Çorum",
+    "region": "Karadeniz",
+    "plate": 19,
+    "cx": 455.5,
+    "cy": 72.8
+  },
+  "giresun": {
+    "name": "Giresun",
+    "region": "Karadeniz",
+    "plate": 28,
+    "cx": 665.4,
+    "cy": 98.2
+  },
+  "gumushane": {
+    "name": "Gümüşhane",
+    "region": "Karadeniz",
+    "plate": 29,
+    "cx": 696.8,
+    "cy": 104.8
+  },
+  "kastamonu": {
+    "name": "Kastamonu",
+    "region": "Karadeniz",
+    "plate": 37,
+    "cx": 401.4,
+    "cy": 24.9
+  },
+  "ordu": {
+    "name": "Ordu",
+    "region": "Karadeniz",
+    "plate": 52,
+    "cx": 593.0,
+    "cy": 85.0
+  },
+  "rize": {
+    "name": "Rize",
+    "region": "Karadeniz",
+    "plate": 53,
+    "cx": 802.6,
+    "cy": 65.4
+  },
+  "samsun": {
+    "name": "Samsun",
+    "region": "Karadeniz",
+    "plate": 55,
+    "cx": 505.7,
+    "cy": 58.6
+  },
+  "sinop": {
+    "name": "Sinop",
+    "region": "Karadeniz",
+    "plate": 57,
+    "cx": 482.8,
+    "cy": 21.3
+  },
+  "tokat": {
+    "name": "Tokat",
+    "region": "Karadeniz",
+    "plate": 60,
+    "cx": 568.6,
+    "cy": 99.3
+  },
+  "trabzon": {
+    "name": "Trabzon",
+    "region": "Karadeniz",
+    "plate": 61,
+    "cx": 709.9,
+    "cy": 85.4
+  },
+  "zonguldak": {
+    "name": "Zonguldak",
+    "region": "Karadeniz",
+    "plate": 67,
+    "cx": 335.1,
+    "cy": 51.9
+  },
+  "bayburt": {
+    "name": "Bayburt",
+    "region": "Karadeniz",
+    "plate": 69,
+    "cx": 745.4,
+    "cy": 119.6
+  },
+  "bartin": {
+    "name": "Bartın",
+    "region": "Karadeniz",
+    "plate": 74,
+    "cx": 369.8,
+    "cy": 35.4
+  },
+  "karabuk": {
+    "name": "Karabük",
+    "region": "Karadeniz",
+    "plate": 78,
+    "cx": 380.4,
+    "cy": 52.5
+  },
+  "duzce": {
+    "name": "Düzce",
+    "region": "Karadeniz",
+    "plate": 81,
+    "cx": 294.3,
+    "cy": 81.1
+  },
+  "adiyaman": {
+    "name": "Adıyaman",
+    "region": "Güneydoğu Anadolu",
+    "plate": 2,
+    "cx": 705.5,
+    "cy": 280.3
+  },
+  "diyarbakir": {
+    "name": "Diyarbakır",
+    "region": "Güneydoğu Anadolu",
+    "plate": 21,
+    "cx": 808.9,
+    "cy": 240.9
+  },
+  "gaziantep": {
+    "name": "Gaziantep",
+    "region": "Güneydoğu Anadolu",
+    "plate": 27,
+    "cx": 626.5,
+    "cy": 327.8
+  },
+  "mardin": {
+    "name": "Mardin",
+    "region": "Güneydoğu Anadolu",
+    "plate": 47,
+    "cx": 785.5,
+    "cy": 308.2
+  },
+  "siirt": {
+    "name": "Siirt",
+    "region": "Güneydoğu Anadolu",
+    "plate": 56,
+    "cx": 837.2,
+    "cy": 271.9
+  },
+  "sanliurfa": {
+    "name": "Şanlıurfa",
+    "region": "Güneydoğu Anadolu",
+    "plate": 63,
+    "cx": 700.7,
+    "cy": 294.1
+  },
+  "batman": {
+    "name": "Batman",
+    "region": "Güneydoğu Anadolu",
+    "plate": 72,
+    "cx": 826.3,
+    "cy": 250.7
+  },
+  "sirnak": {
+    "name": "Şırnak",
+    "region": "Güneydoğu Anadolu",
+    "plate": 73,
+    "cx": 913.4,
+    "cy": 297.9
+  },
+  "kilis": {
+    "name": "Kilis",
+    "region": "Güneydoğu Anadolu",
+    "plate": 79,
+    "cx": 586.4,
+    "cy": 360.9
+  },
+  "agri": {
+    "name": "Ağrı",
+    "region": "Doğu Anadolu",
+    "plate": 4,
+    "cx": 910.7,
+    "cy": 145.7
+  },
+  "bingol": {
+    "name": "Bingöl",
+    "region": "Doğu Anadolu",
+    "plate": 12,
+    "cx": 770.6,
+    "cy": 188.9
+  },
+  "bitlis": {
+    "name": "Bitlis",
+    "region": "Doğu Anadolu",
+    "plate": 13,
+    "cx": 900.0,
+    "cy": 215.1
+  },
+  "elazig": {
+    "name": "Elazığ",
+    "region": "Doğu Anadolu",
+    "plate": 23,
+    "cx": 756.4,
+    "cy": 212.0
+  },
+  "erzincan": {
+    "name": "Erzincan",
+    "region": "Doğu Anadolu",
+    "plate": 24,
+    "cx": 747.3,
+    "cy": 153.9
+  },
+  "erzurum": {
+    "name": "Erzurum",
+    "region": "Doğu Anadolu",
+    "plate": 25,
+    "cx": 845.8,
+    "cy": 88.6
+  },
+  "hakkari": {
+    "name": "Hakkâri",
+    "region": "Doğu Anadolu",
+    "plate": 30,
+    "cx": 967.7,
+    "cy": 289.2
+  },
+  "kars": {
+    "name": "Kars",
+    "region": "Doğu Anadolu",
+    "plate": 36,
+    "cx": 910.5,
+    "cy": 72.5
+  },
+  "malatya": {
+    "name": "Malatya",
+    "region": "Doğu Anadolu",
+    "plate": 44,
+    "cx": 655.9,
+    "cy": 217.6
+  },
+  "mus": {
+    "name": "Muş",
+    "region": "Doğu Anadolu",
+    "plate": 49,
+    "cx": 867.7,
+    "cy": 187.0
+  },
+  "tunceli": {
+    "name": "Tunceli",
+    "region": "Doğu Anadolu",
+    "plate": 62,
+    "cx": 752.0,
+    "cy": 184.4
+  },
+  "van": {
+    "name": "Van",
+    "region": "Doğu Anadolu",
+    "plate": 65,
+    "cx": 946.5,
+    "cy": 186.6
+  },
+  "ardahan": {
+    "name": "Ardahan",
+    "region": "Doğu Anadolu",
+    "plate": 75,
+    "cx": 874.4,
+    "cy": 42.7
+  },
+  "igdir": {
+    "name": "Iğdır",
+    "region": "Doğu Anadolu",
+    "plate": 76,
+    "cx": 929.3,
+    "cy": 136.8
+  }
+}
