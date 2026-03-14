@@ -25,6 +25,7 @@ app.get('/api/health', (_req, res) => res.json({ ok: true, time: new Date() }));
 app.use('/api/auth',        require('./routes/auth'));
 app.use('/api/game',        require('./routes/game'));
 app.use('/api/leaderboard', require('./routes/leaderboard'));
+app.use('/api/cities',      require('./routes/city'));
 
 // ── SPA fallbacks ──────────────────────────────────────────
 app.get('/',            (_req, res) => res.sendFile(path.join(__dirname, '../public/login.html')));

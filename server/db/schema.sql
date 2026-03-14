@@ -39,6 +39,40 @@ CREATE TABLE IF NOT EXISTS transactions (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS city_ownership (
+  city_id         VARCHAR(30) PRIMARY KEY,
+  owner_id        INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  owner_name      VARCHAR(30) NOT NULL DEFAULT '',
+  purchase_price  INTEGER NOT NULL DEFAULT 0,
+  claimed_at      TIMESTAMPTZ DEFAULT NOW(),
+  protected_until TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS city_stats (
+  city_id       VARCHAR(30) PRIMARY KEY,
+  treasury      INTEGER NOT NULL DEFAULT 0,
+  tax_rate      INTEGER NOT NULL DEFAULT 5,
+  infra_storage INTEGER NOT NULL DEFAULT 0,
+  infra_road    INTEGER NOT NULL DEFAULT 0,
+  infra_market  INTEGER NOT NULL DEFAULT 0,
+  infra_factory INTEGER NOT NULL DEFAULT 0,
+  updated_at    TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS city_auctions (
+  id              SERIAL PRIMARY KEY,
+  city_id         VARCHAR(30) NOT NULL,
+  triggered_by    INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  trigger_type    VARCHAR(20) NOT NULL DEFAULT 'challenge',
+  trigger_cost    INTEGER NOT NULL DEFAULT 0,
+  top_bidder_id   INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  top_bidder_name VARCHAR(30),
+  top_bid         INTEGER NOT NULL DEFAULT 0,
+  ends_at         TIMESTAMPTZ NOT NULL,
+  resolved        BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at      TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- Leaderboard index
 CREATE INDEX IF NOT EXISTS idx_saves_money
   ON game_saves (CAST(game_state->>'money' AS numeric) DESC);
