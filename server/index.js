@@ -26,11 +26,15 @@ app.use('/api/auth',        require('./routes/auth'));
 app.use('/api/game',        require('./routes/game'));
 app.use('/api/leaderboard', require('./routes/leaderboard'));
 app.use('/api/cities',      require('./routes/city'));
+app.use('/api/trade',       require('./routes/trade'));
 
 // ── SPA fallbacks ──────────────────────────────────────────
 app.get('/',            (_req, res) => res.sendFile(path.join(__dirname, '../public/login.html')));
 app.get('/game',        (_req, res) => res.sendFile(path.join(__dirname, '../public/game.html')));
 app.get('/leaderboard', (_req, res) => res.sendFile(path.join(__dirname, '../public/leaderboard.html')));
+app.get('/city-admin',  (_req, res) => res.sendFile(path.join(__dirname, '../public/city-admin.html')));
+app.get('/trade-board', (_req, res) => res.sendFile(path.join(__dirname, '../public/trade-board.html')));
+app.get('/profile',     (_req, res) => res.sendFile(path.join(__dirname, '../public/profile.html')));
 
 // ── Socket.io ──────────────────────────────────────────────
 require('./socket/chat')(io);

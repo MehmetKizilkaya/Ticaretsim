@@ -322,6 +322,77 @@ body{font-family:'Segoe UI',sans-serif;background:#1a1a2e;color:#e0e0e0;height:1
 #toast.show{opacity:1}
 #toast.error{border-color:#e94560;color:#e94560}
 
+/* ── Character overlay ── */
+#char-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:900;align-items:center;justify-content:center}
+#char-modal{background:#16213e;border:1px solid #0f3460;border-radius:12px;width:min(700px,96vw);max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
+#char-modal-header{display:flex;align-items:center;padding:16px 20px;border-bottom:1px solid #0f3460;gap:12px}
+#char-modal-header h2{flex:1;font-size:16px;color:#4ecca3}
+#char-close{background:none;border:none;color:#888;font-size:20px;cursor:pointer;line-height:1}
+.char-tabs{display:flex;border-bottom:1px solid #0f3460;flex-shrink:0}
+.char-tab{flex:1;padding:10px;background:none;border:none;color:#888;cursor:pointer;font-size:12px;border-bottom:2px solid transparent;transition:all .2s}
+.char-tab.active{color:#4ecca3;border-bottom-color:#4ecca3;background:#0f3460}
+.char-pane{padding:16px;overflow-y:auto;flex:1}
+.char-btn{padding:7px 14px;border-radius:4px;cursor:pointer;font-size:12px;border:1px solid;background:#0f3460;transition:all .2s}
+.char-btn.green{border-color:#4ecca3;color:#4ecca3}.char-btn.green:hover{background:#4ecca3;color:#16213e}
+.char-btn.red{border-color:#e94560;color:#e94560;font-size:11px;padding:4px 8px}
+.char-btn.disabled{border-color:#333;color:#555;cursor:not-allowed}
+.char-btn.tiny{padding:3px 8px;font-size:10px}
+.char-hr{border:none;border-top:1px solid #0f3460;margin:12px 0}
+/* Skill */
+.skill-card{background:#0d1117;border-radius:8px;padding:12px;margin-bottom:10px}
+.skill-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.skill-name{font-size:13px;color:#fff;font-weight:700}
+.skill-bars{display:flex;gap:4px}
+.skill-bar{width:24px;height:6px;background:#0f3460;border-radius:3px}
+.skill-bar.filled{background:#4ecca3}
+.skill-desc{font-size:11px;color:#888;margin-bottom:8px}
+.skill-perk{color:#f5a623;margin-left:6px}
+.skill-max{color:#4ecca3;font-size:12px}
+/* Modules */
+.mod-slots{display:flex;gap:10px;margin-bottom:16px}
+.mod-slot{flex:1;background:#0d1117;border:1px solid #0f3460;border-radius:8px;padding:10px;min-height:60px}
+.mod-slot-label{font-size:10px;color:#555;text-transform:uppercase;margin-bottom:6px}
+.mod-empty{font-size:12px;color:#333}
+.mod-installed{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12px;color:#4ecca3}
+.mod-list{display:flex;flex-direction:column;gap:8px}
+.mod-item{display:flex;align-items:center;gap:12px;background:#0d1117;border-radius:8px;padding:10px}
+.mod-item.equipped{border:1px solid #4ecca3}
+.mod-icon{font-size:20px;width:30px;text-align:center}
+.mod-info{flex:1}
+.mod-name{font-size:13px;color:#fff;font-weight:700}
+.mod-desc{font-size:11px;color:#888}
+.mod-tag{font-size:11px;color:#4ecca3;white-space:nowrap}
+.mod-tag.warn{color:#f5a623}
+/* Licenses */
+.lic-card{background:#0d1117;border-radius:8px;padding:12px;margin-bottom:10px;display:flex;flex-direction:column;gap:6px}
+.lic-card.owned{border:1px solid #4ecca3}
+.lic-header{display:flex;align-items:center;justify-content:space-between}
+.lic-name{font-size:13px;font-weight:700;color:#fff}
+.lic-bonus{font-size:12px;color:#f5a623}
+.lic-prods{font-size:11px;color:#888}
+.lic-owned{font-size:12px;color:#4ecca3}
+/* Intel */
+.intel-tier{background:#0d1117;border-radius:8px;padding:12px;margin-bottom:10px}
+.intel-tier.unlocked{border:1px solid #4ecca3}
+.intel-tier-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px}
+.intel-tier-desc{font-size:11px;color:#888;margin-bottom:8px}
+.intel-active{font-size:12px;color:#4ecca3}
+
+/* ── Profile modal ── */
+#profile-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:900;align-items:center;justify-content:center}
+#profile-box{background:#16213e;border:1px solid #0f3460;border-radius:12px;width:min(560px,96vw);max-height:88vh;overflow-y:auto}
+.profile-header{padding:20px;border-bottom:1px solid #0f3460;display:flex;align-items:center;justify-content:space-between}
+.profile-section{padding:16px 20px;border-bottom:1px solid #0a0a1a}
+.profile-section h4{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat-box{background:#0d1117;border-radius:6px;padding:10px;text-align:center}
+.stat-box .sv{font-size:18px;font-weight:700;color:#4ecca3}
+.stat-box .sl{font-size:10px;color:#888;margin-top:2px}
+.tx-table{width:100%;border-collapse:collapse;font-size:11px}
+.tx-table th{color:#888;text-align:left;padding:4px 6px;border-bottom:1px solid #0f3460}
+.tx-table td{padding:4px 6px;border-bottom:1px solid #0a0a1a;color:#ccc}
+.tx-buy{color:#e94560}.tx-sell{color:#4ecca3}
+
 /* Capacity bar */
 .cap-bar{height:6px;background:#0f3460;border-radius:3px;overflow:hidden;margin-top:4px}
 .cap-fill{height:100%;background:#4ecca3;border-radius:3px;transition:width .3s}
@@ -367,7 +438,12 @@ body{font-family:'Segoe UI',sans-serif;background:#1a1a2e;color:#e0e0e0;height:1
   </div>
   <div class="sep"></div>
   <div class="stat"><label>Oyuncu</label><span id="hud-username" style="color:#4ecca3">—</span></div>
+  <div class="stat" id="hud-homebase" style="font-size:11px;color:#f5a623"></div>
   <div class="spacer"></div>
+  <button onclick="openProfileModal()" style="border-color:#4ecca3;color:#4ecca3">👤 Profil</button>
+  <button onclick="openCharacterOverlay()" style="border-color:#f5a623;color:#f5a623">⚔️ Karakter</button>
+  <button onclick="window.location='/city-admin'" style="border-color:#888;color:#888">🏛️ Şehirler</button>
+  <button onclick="window.location='/trade-board'" style="border-color:#888;color:#888">💼 Pano</button>
   <button onclick="window.location='/leaderboard'" style="border-color:#888;color:#888">🏆 Lider</button>
   <button id="btn-save" onclick="saveGame()">💾 Kaydet</button>
   <button onclick="logout()" style="border-color:#e94560;color:#e94560">Çıkış</button>
@@ -402,6 +478,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a1a2e;color:#e0e0e0;height:1
       <div id="panel-garage" style="display:none;border-top:1px solid #0f3460;padding-top:12px;margin-top:12px">
         <h3 style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">🔧 Garaj</h3>
         <div id="garage-content"></div>
+        <div id="homebase-btn-wrap" style="margin-top:8px"></div>
       </div>
     </div>
   </div>
@@ -433,6 +510,54 @@ body{font-family:'Segoe UI',sans-serif;background:#1a1a2e;color:#e0e0e0;height:1
 </div>
 
 <div id="toast"></div>
+
+<!-- Character overlay -->
+<div id="char-overlay" onclick="if(event.target===this)closeCharacterOverlay()">
+  <div id="char-modal">
+    <div id="char-modal-header">
+      <h2>⚔️ Karakter Geliştirme</h2>
+      <button id="char-close" onclick="closeCharacterOverlay()">✕</button>
+    </div>
+    <div class="char-tabs">
+      <button class="char-tab active" id="char-tab-skill"   onclick="switchCharTab('skill')">🎓 Beceri Ağacı</button>
+      <button class="char-tab"        id="char-tab-module"  onclick="switchCharTab('module')">🔧 Araç Modülleri</button>
+      <button class="char-tab"        id="char-tab-license" onclick="switchCharTab('license')">📜 Ticaret Lisansları</button>
+      <button class="char-tab"        id="char-tab-intel"   onclick="switchCharTab('intel')">🔭 Bilgi Ağı</button>
+    </div>
+    <div id="char-pane-skill"   class="char-pane"></div>
+    <div id="char-pane-module"  class="char-pane" style="display:none"></div>
+    <div id="char-pane-license" class="char-pane" style="display:none"></div>
+    <div id="char-pane-intel"   class="char-pane" style="display:none"></div>
+  </div>
+</div>
+
+<!-- Profile modal -->
+<div id="profile-modal" onclick="if(event.target===this)closeProfileModal()">
+  <div id="profile-box">
+    <div class="profile-header">
+      <div>
+        <div style="font-size:18px;font-weight:700;color:#4ecca3" id="prof-username">—</div>
+        <div style="font-size:12px;color:#888;margin-top:2px" id="prof-email">—</div>
+      </div>
+      <button onclick="closeProfileModal()" style="background:none;border:none;color:#888;font-size:20px;cursor:pointer">✕</button>
+    </div>
+    <div class="profile-section">
+      <h4>Mevcut Durum</h4>
+      <div class="stat-grid" id="prof-stats"></div>
+    </div>
+    <div class="profile-section">
+      <h4>Beceriler &amp; Donanım</h4>
+      <div id="prof-skills" style="font-size:12px;color:#ccc;line-height:1.8"></div>
+    </div>
+    <div class="profile-section">
+      <h4>Son 20 İşlem</h4>
+      <table class="tx-table">
+        <thead><tr><th>Ürün</th><th>İşlem</th><th>Miktar</th><th>Fiyat</th><th>Şehir</th><th>Zaman</th></tr></thead>
+        <tbody id="prof-tx"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 <script>
 'use strict';
@@ -470,6 +595,37 @@ const TRUCK_TIERS = [
 ];
 const MAX_ENERGY  = 100;
 const ENERGY_COST = 30;  // max fuel per max-distance trip
+
+// ── Skill tree ─────────────────────────────────────────────
+const SKILL_TREE = {
+  pazarlik:   {name:'🤝 Pazarlık',       desc:'Alış fiyatı indirir',       costs:[60000,200000,600000],   perks:['-5% alış','-10% alış','-15% alış']},
+  navigasyon: {name:'🧭 Navigasyon',      desc:'Seyahat süresi kısalır',    costs:[50000,150000,450000],   perks:['-10% süre','-20% süre','-30% süre']},
+  lojistik:   {name:'📦 Lojistik',        desc:'Araç kapasitesi artar',     costs:[80000,250000,700000],   perks:['+10t','+20t','+30t']},
+  analiz:     {name:'📊 Piyasa Analizi',  desc:'Fiyat bilgisi genişler',    costs:[100000,300000,900000],  perks:['Bölgesel','Tüm şehirler','Gerçek zamanlı']},
+  diplomatik: {name:'🏛️ Diplomatik',     desc:'Şehir satın alma indirimi', costs:[120000,400000,1200000], perks:['-15% şehir','-25% şehir','-35% şehir']},
+};
+const SKILL_IDS = Object.keys(SKILL_TREE);
+
+// ── Vehicle modules ────────────────────────────────────────
+const MODULES = {
+  gps:    {name:'GPS Sistemi',      icon:'🛰️', cost:80000,  desc:'Haritada diğer araçlar görünür'},
+  sogutma:{name:'Soğutma Ünitesi', icon:'❄️',  cost:45000,  desc:'Taze ürünler bozulmaz'},
+  yakit:  {name:'Ek Yakıt Deposu', icon:'⛽', cost:35000,  desc:'Maks enerji +50'},
+  turbo:  {name:'Turbo Şarj',      icon:'💨', cost:120000, desc:'Seyahat süresi -%15'},
+  zirh:   {name:'Zırhlı Kasa',     icon:'🛡️', cost:90000,  desc:'Olaylardan etkilenmez'},
+};
+const MODULE_IDS = Object.keys(MODULES);
+
+// ── Trade licenses ─────────────────────────────────────────
+const LICENSE_CATS = {
+  tarim:    {name:'🌾 Tarım',     prods:['bugday','misir','pancar','elma','kayisi','turunçgil'], bonus:0.12, cost:150000},
+  dogal:    {name:'🌿 Doğal',     prods:['cay','bal','uzum','fistak','zeytinyagi','findik'],     bonus:0.10, cost:200000},
+  hammadde: {name:'⛏️ Hammadde', prods:['tuz','mermer','komur'],                                bonus:0.15, cost:120000},
+  sanayi:   {name:'⚙️ Sanayi',   prods:['sanayi','celik'],                                      bonus:0.10, cost:180000},
+  enerji:   {name:'🛢️ Enerji',   prods:['petrol'],                                              bonus:0.20, cost:250000},
+  tekstil:  {name:'👔 Tekstil',  prods:['tekstil','pamuk'],                                     bonus:0.12, cost:160000},
+};
+const LICENSE_IDS = Object.keys(LICENSE_CATS);
 
 // ============================================================
 // CITY GOVERNANCE (server-synced)
@@ -513,7 +669,8 @@ async function apiPost(url, body) {
 
 // ── Governance actions ──────────────────────────────────────
 async function claimCity(cityId) {
-  const data = await apiPost(`/api/cities/${cityId}/claim`, {});
+  const dipLvl = state.skills?.diplomatik || 0;
+  const data   = await apiPost(`/api/cities/${cityId}/claim`, { diplomaticLevel: dipLvl });
   if (data.error) return showToast(data.error, 'error');
   state.money = data.newMoney;
   updateHUD();
@@ -667,9 +824,9 @@ function calcPrice(cid, pid) {
   const base  = PRODUCTS[pid].basePrice;
   const sup   = citySupply[cid]?.[pid] ?? 5;
   const dem   = (CITIES[cid]?.dem||{})[pid]||0;
-  const supF  = 1 - (sup - 5) * 0.04;   // 8→-12%, 2→+12%
-  const demF  = 1 + dem * 0.15;         // dem:3 → +45%
-  const noise = 0.88 + Math.random()*0.24;
+  const supF  = 1 - (sup - 5) * 0.025;  // 8→-7.5%, 2→+7.5%
+  const demF  = 1 + dem * 0.08;         // dem:3 → +24%
+  const noise = 0.93 + Math.random()*0.14;
   return Math.max(50, Math.round(base * supF * demF * noise));
 }
 
@@ -704,10 +861,29 @@ let state = {
   lastEcoTick:    0,
   lastNewsTime:   0,
   lastEnergyTick: 0,
+  skills:   {pazarlik:0, navigasyon:0, lojistik:0, analiz:0, diplomatik:0},
+  modules:  [null, null, null],
+  licenses: {},
+  homeBase: null,
 };
 
 function invLoad() {
   return Object.values(state.inventory).reduce((a,b)=>a+b,0);
+}
+
+function getMaxEnergy() {
+  return MAX_ENERGY + ((state.modules||[]).includes('yakit') ? 50 : 0);
+}
+function getEffectiveCap() {
+  const bonus = [0,10,20,30][state.skills?.lojistik || 0];
+  return state.truckCapacity + bonus;
+}
+function getLicenseBonus(pid) {
+  const lic = state.licenses || {};
+  for (const [catId, cat] of Object.entries(LICENSE_CATS)) {
+    if (lic[catId] && cat.prods.includes(pid)) return cat.bonus;
+  }
+  return 0;
 }
 
 // ============================================================
@@ -723,7 +899,11 @@ function cityDist(a, b) {
 }
 
 function travelDuration(a, b) {
-  return Math.max(5000, Math.min(MAX_TRAVEL, (cityDist(a,b)/MAX_DIST)*MAX_TRAVEL));
+  const navLvl   = state.skills?.navigasyon || 0;
+  const navDisc  = [0, 0.10, 0.20, 0.30][navLvl];
+  const hasTurbo = (state.modules||[]).includes('turbo');
+  const mult     = Math.max(0.4, 1 - navDisc - (hasTurbo ? 0.15 : 0));
+  return Math.max(5000, Math.min(MAX_TRAVEL, (cityDist(a,b)/MAX_DIST)*MAX_TRAVEL * mult));
 }
 
 function energyCost(from, to) {
@@ -763,20 +943,24 @@ function buyProduct(pid, qty) {
   if (qty <= 0) return;
   const price = cachedPrices[state.position]?.[pid];
   if (!price) return;
-  const tax     = cityTaxRate(state.position);
-  const baseCost = price * qty;
+  const isHome   = state.homeBase === state.position;
+  const bargain  = [0, 0.05, 0.10, 0.15][state.skills?.pazarlik || 0];
+  const tax      = isHome ? 0 : cityTaxRate(state.position);
+  const baseCost = Math.round(price * qty * (1 - bargain));
   const taxCost  = Math.round(baseCost * tax / 100);
   const cost     = baseCost + taxCost;
+  const cap      = getEffectiveCap();
   if (cost > state.money) return showToast('Yeterli para yok!','error');
-  if (invLoad() + qty > state.truckCapacity) return showToast('Araç kapasitesi dolu!','error');
+  if (invLoad() + qty > cap) return showToast('Araç kapasitesi dolu!','error');
   state.money -= cost;
   state.inventory[pid] = (state.inventory[pid]||0) + qty;
   citySupply[state.position][pid] = Math.max(1, (citySupply[state.position][pid]||5) - qty*0.4);
   refreshCityPanel();
   updateHUD();
   updateInventoryBar();
-  const taxStr = taxCost > 0 ? ` (+${taxCost.toLocaleString('tr-TR')} TL vergi)` : '';
-  showToast(`${qty} ton ${PRODUCTS[pid].name} → ${cost.toLocaleString('tr-TR')} TL${taxStr}`);
+  const discStr = bargain > 0 ? ` (-%${Math.round(bargain*100)} pazarlık)` : '';
+  const taxStr  = taxCost > 0 ? ` (+${taxCost.toLocaleString('tr-TR')} TL vergi)` : (isHome ? ' (Ana Üs - vergisiz)' : '');
+  showToast(`${qty} ton ${PRODUCTS[pid].name} → ${cost.toLocaleString('tr-TR')} TL${discStr}${taxStr}`);
   logTransaction('buy', pid, qty, price);
   if (taxCost > 0) payTax(state.position, taxCost);
 }
@@ -788,10 +972,12 @@ function sellProduct(pid, qty) {
   qty = Math.min(qty, have);
   const price = cachedPrices[state.position]?.[pid];
   if (!price) return;
-  const tax     = cityTaxRate(state.position);
-  const baseEarn = price * qty;
-  const taxCost  = Math.round(baseEarn * tax / 100);
-  const earn     = baseEarn - taxCost;
+  const isHome      = state.homeBase === state.position;
+  const licBonus    = getLicenseBonus(pid);
+  const tax         = isHome ? 0 : cityTaxRate(state.position);
+  const baseEarn    = Math.round(price * qty * (1 + licBonus));
+  const taxCost     = Math.round(baseEarn * tax / 100);
+  const earn        = baseEarn - taxCost;
   state.money += earn;
   state.inventory[pid] = have - qty;
   if (!state.inventory[pid]) delete state.inventory[pid];
@@ -799,14 +985,15 @@ function sellProduct(pid, qty) {
   refreshCityPanel();
   updateHUD();
   updateInventoryBar();
-  const taxStr = taxCost > 0 ? ` (-${taxCost.toLocaleString('tr-TR')} TL vergi)` : '';
-  showToast(`Satıldı! +${earn.toLocaleString('tr-TR')} TL${taxStr}`);
+  const licStr = licBonus > 0 ? ` (+%${Math.round(licBonus*100)} lisans)` : '';
+  const taxStr = taxCost > 0 ? ` (-${taxCost.toLocaleString('tr-TR')} TL vergi)` : (isHome ? ' (Ana Üs - vergisiz)' : '');
+  showToast(`Satıldı! +${earn.toLocaleString('tr-TR')} TL${licStr}${taxStr}`);
   logTransaction('sell', pid, qty, price);
   if (taxCost > 0) payTax(state.position, taxCost);
 }
 
 function buyMaxProduct(pid) {
-  const avail = state.truckCapacity - invLoad();
+  const avail = getEffectiveCap() - invLoad();
   if (avail <= 0) return showToast('Araç kapasitesi dolu!','error');
   buyProduct(pid, avail);
 }
@@ -832,15 +1019,240 @@ function upgradeTruck(tier) {
 }
 
 function refuelVehicle() {
-  const needed = MAX_ENERGY - state.energy;
+  const maxE   = getMaxEnergy();
+  const needed = maxE - state.energy;
   if (needed < 1) return showToast('Yakıt zaten dolu!');
-  const cost = Math.ceil(needed * 15);
+  const isHome      = state.homeBase === state.position;
+  const costPerUnit = isHome ? 7 : 15;   // 53% discount at home base
+  const cost        = Math.ceil(needed * costPerUnit);
   if (state.money < cost) return showToast(`Yeterli para yok! Gereken: ${cost.toLocaleString('tr-TR')} TL`,'error');
   state.money -= cost;
-  state.energy = MAX_ENERGY;
+  state.energy = maxE;
   updateHUD();
   refreshCityPanel();
-  showToast(`Araç yakıtlandı! -${cost.toLocaleString('tr-TR')} TL`);
+  const discStr = isHome ? ' (Ana Üs indirimi)' : '';
+  showToast(`Araç yakıtlandı! -${cost.toLocaleString('tr-TR')} TL${discStr}`);
+}
+
+// ── Home base management ────────────────────────────────────
+function setHomeBase(cityId) {
+  const already = state.homeBase === cityId;
+  if (already) return showToast('Burası zaten ana üsünüz!');
+  const changeCost = state.homeBase ? 200000 : 0;
+  if (changeCost > 0 && state.money < changeCost)
+    return showToast(`Ana üs değiştirme maliyeti: ${changeCost.toLocaleString('tr-TR')} TL`,'error');
+  if (changeCost > 0) state.money -= changeCost;
+  state.homeBase = cityId;
+  updateHUD();
+  refreshCityPanel();
+  const msg = changeCost > 0 ? ` (-${changeCost.toLocaleString('tr-TR')} TL)` : '';
+  showToast(`🏠 ${CITIES[cityId]?.name} ana üs olarak ayarlandı!${msg}`);
+  saveGame();
+}
+
+// ── Skill tree purchase ────────────────────────────────────
+function buySkill(skillId) {
+  const sk  = SKILL_TREE[skillId];
+  const cur = state.skills?.[skillId] || 0;
+  if (cur >= 3) return showToast('Bu beceri maksimum seviyede!');
+  const cost = sk.costs[cur];
+  if (state.money < cost) return showToast(`Yeterli para yok! Gereken: ${cost.toLocaleString('tr-TR')} TL`,'error');
+  state.money -= cost;
+  state.skills = state.skills || {};
+  state.skills[skillId] = cur + 1;
+  // Lojistik: update effective cap immediately
+  if (skillId === 'lojistik') state.truckCapacity = TRUCK_TIERS[state.truckTier].cap;
+  updateHUD();
+  updateInventoryBar();
+  showToast(`${sk.name} Seviye ${cur+1} açıldı! -${cost.toLocaleString('tr-TR')} TL`);
+  saveGame();
+  renderCharacterOverlay();
+}
+
+// ── Module install/remove ──────────────────────────────────
+function installModule(slot, moduleId) {
+  if (!state.modules) state.modules = [null,null,null];
+  if (slot < 0 || slot > 2) return;
+  const mod = MODULES[moduleId];
+  if (!mod) return;
+  if ((state.modules||[]).includes(moduleId)) return showToast('Bu modül zaten takılı!','error');
+  if (state.money < mod.cost) return showToast(`Yeterli para yok! Gereken: ${mod.cost.toLocaleString('tr-TR')} TL`,'error');
+  state.money -= mod.cost;
+  state.modules[slot] = moduleId;
+  updateHUD();
+  showToast(`${mod.icon} ${mod.name} takıldı! Slot ${slot+1}`);
+  saveGame();
+  renderCharacterOverlay();
+}
+
+function removeModule(slot) {
+  if (!state.modules?.[slot]) return;
+  state.modules[slot] = null;
+  updateHUD();
+  showToast('Modül çıkarıldı (iade yapılmaz)');
+  saveGame();
+  renderCharacterOverlay();
+}
+
+// ── License purchase ───────────────────────────────────────
+function buyLicense(catId) {
+  const cat = LICENSE_CATS[catId];
+  if (!cat) return;
+  if (state.licenses?.[catId]) return showToast('Bu lisans zaten mevcut!');
+  if (state.money < cat.cost) return showToast(`Yeterli para yok! Gereken: ${cat.cost.toLocaleString('tr-TR')} TL`,'error');
+  state.money -= cat.cost;
+  state.licenses = state.licenses || {};
+  state.licenses[catId] = true;
+  updateHUD();
+  showToast(`${cat.name} lisansı satın alındı! +%${Math.round(cat.bonus*100)} satış bonusu`);
+  saveGame();
+  renderCharacterOverlay();
+}
+
+// ── Character overlay renderer ─────────────────────────────
+function openCharacterOverlay() {
+  document.getElementById('char-overlay').style.display = 'flex';
+  renderCharacterOverlay();
+}
+function closeCharacterOverlay() {
+  document.getElementById('char-overlay').style.display = 'none';
+}
+function switchCharTab(tab) {
+  document.querySelectorAll('.char-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.char-pane').forEach(p => p.style.display = 'none');
+  document.getElementById('char-tab-'+tab)?.classList.add('active');
+  document.getElementById('char-pane-'+tab).style.display = 'block';
+}
+
+function renderCharacterOverlay() {
+  renderSkillPane();
+  renderModulePane();
+  renderLicensePane();
+  renderIntelPane();
+}
+
+function renderSkillPane() {
+  const el = document.getElementById('char-pane-skill');
+  if (!el) return;
+  const skills = state.skills || {};
+  el.innerHTML = SKILL_IDS.map(sid => {
+    const sk  = SKILL_TREE[sid];
+    const lvl = skills[sid] || 0;
+    const cost = lvl < 3 ? sk.costs[lvl] : null;
+    const canBuy = cost !== null && state.money >= cost;
+    const bars = Array.from({length:3}, (_,i) =>
+      `<div class="skill-bar ${i < lvl ? 'filled' : ''}"></div>`
+    ).join('');
+    const perk = lvl > 0 ? `<span class="skill-perk">${sk.perks[lvl-1]}</span>` : '';
+    return `<div class="skill-card">
+      <div class="skill-header">
+        <span class="skill-name">${sk.name}</span>
+        <div class="skill-bars">${bars}</div>
+      </div>
+      <div class="skill-desc">${sk.desc} ${perk}</div>
+      ${cost !== null
+        ? `<button class="char-btn ${canBuy?'green':'disabled'}" onclick="buySkill('${sid}')" ${canBuy?'':'disabled'}>
+             Seviye ${lvl+1} — ${cost.toLocaleString('tr-TR')} TL <small>${sk.perks[lvl]}</small>
+           </button>`
+        : '<div class="skill-max">✓ Maksimum</div>'}
+    </div>`;
+  }).join('');
+}
+
+function renderModulePane() {
+  const el = document.getElementById('char-pane-module');
+  if (!el) return;
+  const mods = state.modules || [null,null,null];
+  const slotHtml = [0,1,2].map(i => {
+    const mid = mods[i];
+    const mod = mid ? MODULES[mid] : null;
+    return `<div class="mod-slot">
+      <div class="mod-slot-label">Slot ${i+1}</div>
+      ${mod
+        ? `<div class="mod-installed">
+             <span>${mod.icon} ${mod.name}</span>
+             <button class="char-btn red tiny" onclick="removeModule(${i})">Çıkar</button>
+           </div>`
+        : `<div class="mod-empty">Boş</div>`}
+    </div>`;
+  }).join('');
+
+  const availHtml = MODULE_IDS.map(mid => {
+    const mod = MODULES[mid];
+    const equipped = mods.includes(mid);
+    const canBuy   = !equipped && state.money >= mod.cost;
+    const freeSlot = mods.indexOf(null);
+    return `<div class="mod-item ${equipped?'equipped':''}">
+      <span class="mod-icon">${mod.icon}</span>
+      <div class="mod-info">
+        <div class="mod-name">${mod.name}</div>
+        <div class="mod-desc">${mod.desc}</div>
+      </div>
+      ${equipped
+        ? '<span class="mod-tag">Takılı</span>'
+        : freeSlot >= 0
+          ? `<button class="char-btn ${canBuy?'green':'disabled'}" onclick="installModule(${freeSlot},'${mid}')" ${canBuy?'':'disabled'}>
+               ${mod.cost.toLocaleString('tr-TR')} TL
+             </button>`
+          : '<span class="mod-tag warn">Slot Dolu</span>'}
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `<div class="mod-slots">${slotHtml}</div><hr class="char-hr"/><div class="mod-list">${availHtml}</div>`;
+}
+
+function renderLicensePane() {
+  const el = document.getElementById('char-pane-license');
+  if (!el) return;
+  const lics = state.licenses || {};
+  el.innerHTML = LICENSE_IDS.map(lid => {
+    const cat = LICENSE_CATS[lid];
+    const owned = !!lics[lid];
+    const canBuy = !owned && state.money >= cat.cost;
+    return `<div class="lic-card ${owned?'owned':''}">
+      <div class="lic-header">
+        <span class="lic-name">${cat.name} Lisansı</span>
+        <span class="lic-bonus">+%${Math.round(cat.bonus*100)} satış</span>
+      </div>
+      <div class="lic-prods">${cat.prods.map(p=>PRODUCTS[p]?.icon+''+PRODUCTS[p]?.name).join(', ')}</div>
+      ${owned
+        ? '<div class="lic-owned">✓ Aktif</div>'
+        : `<button class="char-btn ${canBuy?'green':'disabled'}" onclick="buyLicense('${lid}')" ${canBuy?'':'disabled'}>
+             ${cat.cost.toLocaleString('tr-TR')} TL
+           </button>`}
+    </div>`;
+  }).join('');
+}
+
+function renderIntelPane() {
+  const el = document.getElementById('char-pane-intel');
+  if (!el) return;
+  const lvl = state.skills?.analiz || 0;
+  const levels = [
+    {name:'Bölgesel Ağ',    desc:'Aynı bölgedeki şehirlerin fiyatları otomatik görünür', cost:100000},
+    {name:'Ulusal Ağ',      desc:'Tüm şehirlerin fiyatları haritada görünür',             cost:300000},
+    {name:'Gerçek Zamanlı', desc:'Fiyatlar her 30 saniyede güncellenir',                   cost:900000},
+  ];
+  el.innerHTML = `
+    <div style="font-size:12px;color:#888;margin-bottom:16px">
+      Piyasa Analizi becerisi, fiyat takibini kademeli olarak genişletir.
+      Şu an: <b style="color:#4ecca3">${lvl === 0 ? 'Yok' : levels[lvl-1].name}</b>
+    </div>
+    ${levels.map((lv,i) => {
+      const unlocked = lvl > i;
+      const isCur    = lvl === i+1;
+      const canBuy   = lvl === i && state.money >= SKILL_TREE.analiz.costs[i];
+      return `<div class="intel-tier ${unlocked?'unlocked':isCur?'current':''}">
+        <div class="intel-tier-name">${['🔵','🟡','🟢'][i]} Seviye ${i+1}: ${lv.name}</div>
+        <div class="intel-tier-desc">${lv.desc}</div>
+        ${unlocked ? '<div class="intel-active">✓ Aktif</div>' :
+          `<button class="char-btn ${canBuy?'green':'disabled'}" onclick="buySkill('analiz')" ${canBuy?'':'disabled'}>
+             ${SKILL_TREE.analiz.costs[i].toLocaleString('tr-TR')} TL
+           </button>`}
+      </div>`;
+    }).join('')}
+    ${lvl >= 3 ? '<div style="text-align:center;color:#4ecca3;margin-top:16px">✓ Tüm seviyeler açık — gerçek zamanlı veri aktif</div>' : ''}
+  `;
 }
 
 // ============================================================
@@ -862,13 +1274,17 @@ function renderGovPanel(cid) {
 
   // ── Ownership badge ──────────────────────────────────────
   if (!owned) {
-    const bv = gov?.baseValue || 40000;
-    const canBuy = state.money >= bv;
+    const bv      = gov?.baseValue || 40000;
+    const dipLvl  = state.skills?.diplomatik || 0;
+    const dipDisc = [0, 0.15, 0.25, 0.35][dipLvl];
+    const adjBv   = Math.round(bv * (1 - dipDisc));
+    const canBuy  = state.money >= adjBv;
+    const discStr = dipLvl > 0 ? ` <span style="color:#f5a623;font-size:10px">(-%${Math.round(dipDisc*100)} Diplomatik)</span>` : '';
     banner.className = 'gov-banner unclaimed';
     banner.innerHTML = `
       <div>
         <div class="gov-unclaimed">🏚️ Sahipsiz şehir</div>
-        <div style="font-size:11px;color:#888;margin-top:2px">Satın alma bedeli: <b style="color:#fff">${bv.toLocaleString('tr-TR')} TL</b></div>
+        <div style="font-size:11px;color:#888;margin-top:2px">Satın alma bedeli: <b style="color:#fff">${adjBv.toLocaleString('tr-TR')} TL</b>${discStr}</div>
       </div>
       <button class="gov-btn green" style="width:auto;padding:6px 12px;margin:0" onclick="claimCity('${cid}')" ${canBuy?'':'disabled'}>Satın Al</button>`;
   } else {
@@ -1259,10 +1675,13 @@ function refreshCityPanel() {
   const atCity    = !state.traveling && cid === state.position;
   if (atCity) {
     let garageHtml = '';
-    const needed  = Math.ceil(MAX_ENERGY - state.energy);
+    const maxE    = getMaxEnergy();
+    const needed  = Math.ceil(maxE - state.energy);
     if (needed > 0) {
-      const fuelCost = needed * 15;
-      garageHtml += `<button onclick="refuelVehicle()" style="width:100%;margin-bottom:6px;padding:8px;background:#0f3460;border:1px solid #f5a623;color:#f5a623;border-radius:4px;cursor:pointer;font-size:12px">⚡ Yakıt Doldur (+${needed}) — ${fuelCost.toLocaleString('tr-TR')} TL</button>`;
+      const isHome   = state.homeBase === cid;
+      const fuelCost = Math.ceil(needed * (isHome ? 7 : 15));
+      const discStr  = isHome ? ' (Ana Üs -53%)' : '';
+      garageHtml += `<button onclick="refuelVehicle()" style="width:100%;margin-bottom:6px;padding:8px;background:#0f3460;border:1px solid #f5a623;color:#f5a623;border-radius:4px;cursor:pointer;font-size:12px">⚡ Yakıt Doldur (+${needed}) — ${fuelCost.toLocaleString('tr-TR')} TL${discStr}</button>`;
     }
     TRUCK_TIERS.forEach((t, i) => {
       if (i <= state.truckTier) return;
@@ -1271,6 +1690,17 @@ function refreshCityPanel() {
     });
     if (!garageHtml) garageHtml = '<span style="color:#555;font-size:12px">Araç maksimum düzeyde, yakıt dolu.</span>';
     garageEl.innerHTML = garageHtml;
+    // Home base button
+    const isHome   = state.homeBase === cid;
+    const changeCost = state.homeBase ? 200000 : 0;
+    const hbWrap   = document.getElementById('homebase-btn-wrap');
+    if (hbWrap) {
+      hbWrap.innerHTML = isHome
+        ? `<div style="text-align:center;font-size:12px;color:#f5a623;padding:6px">🏠 Ana Üs — Vergi bağışıklığı &amp; yakıt indirimi aktif</div>`
+        : `<button onclick="setHomeBase('${cid}')" style="width:100%;padding:8px;background:#0f3460;border:1px solid #f5a623;color:#f5a623;border-radius:4px;cursor:pointer;font-size:12px">
+             🏠 Ana Üs Yap ${changeCost ? '— '+changeCost.toLocaleString('tr-TR')+' TL' : '(ücretsiz)'}
+           </button>`;
+    }
     garageDiv.style.display = 'block';
   } else {
     garageDiv.style.display = 'none';
@@ -1283,20 +1713,25 @@ function updateHUD() {
   document.getElementById('hud-location').textContent =
     state.traveling ? `🚛 → ${CITIES[state.traveling.to]?.name||'?'}` :
                       (CITIES[state.position]?.name || state.position);
-  const load = invLoad();
-  const tier = TRUCK_TIERS[state.truckTier || 0];
+  const load    = invLoad();
+  const tier    = TRUCK_TIERS[state.truckTier || 0];
+  const effCap  = getEffectiveCap();
   document.getElementById('hud-capacity').textContent =
-    `${tier.icon} ${load}/${state.truckCapacity} ton`;
-  const pct = Math.max(0, Math.min(100, Math.round(state.energy)));
-  document.getElementById('hud-energy-val').textContent = pct;
+    `${tier.icon} ${load}/${effCap} ton`;
+  const maxE = getMaxEnergy();
+  const pct  = Math.max(0, Math.min(100, Math.round(state.energy / maxE * 100)));
+  document.getElementById('hud-energy-val').textContent = Math.round(state.energy);
   const bar = document.getElementById('hud-energy-bar');
   bar.style.width = pct + '%';
   bar.className = 'energy-fill' + (pct < 25 ? ' low' : '');
+  // Home base indicator
+  const homeEl = document.getElementById('hud-homebase');
+  if (homeEl) homeEl.textContent = state.homeBase ? `🏠 ${CITIES[state.homeBase]?.name||'?'}` : '';
 }
 
 function updateInventoryBar() {
   const load = invLoad();
-  document.getElementById('inv-cap-text').textContent = `${load}/${state.truckCapacity} ton`;
+  document.getElementById('inv-cap-text').textContent = `${load}/${getEffectiveCap()} ton`;
   const el = document.getElementById('inventory-items');
   const entries = Object.entries(state.inventory).filter(([,q])=>q>0);
   if (!entries.length) {
@@ -1346,6 +1781,69 @@ function logout() {
 function authGuard() {
   if (!getToken()) { window.location.href = '/'; return false; }
   return true;
+}
+
+// ============================================================
+// PROFILE MODAL
+// ============================================================
+function openProfileModal() {
+  document.getElementById('profile-modal').style.display = 'flex';
+  loadProfileData();
+}
+function closeProfileModal() {
+  document.getElementById('profile-modal').style.display = 'none';
+}
+
+async function loadProfileData() {
+  const user = getCurrentUser();
+  if (!user) return;
+  document.getElementById('prof-username').textContent = user.username;
+  document.getElementById('prof-email').textContent    = user.email || '';
+
+  // Stats
+  const ownedCities = Object.values(cityGov).filter(g => g.owner_id === user.id).length;
+  const tier  = TRUCK_TIERS[state.truckTier || 0];
+  document.getElementById('prof-stats').innerHTML = `
+    <div class="stat-box"><div class="sv">${Math.round(state.money).toLocaleString('tr-TR')} TL</div><div class="sl">Mevcut Para</div></div>
+    <div class="stat-box"><div class="sv">${tier.icon} ${tier.name}</div><div class="sl">Araç</div></div>
+    <div class="stat-box"><div class="sv">${getEffectiveCap()} ton</div><div class="sl">Kapasite</div></div>
+    <div class="stat-box"><div class="sv">${ownedCities}</div><div class="sl">Sahip Olunan Şehir</div></div>
+    <div class="stat-box"><div class="sv">${state.homeBase ? CITIES[state.homeBase]?.name || state.homeBase : 'Yok'}</div><div class="sl">Ana Üs</div></div>
+    <div class="stat-box"><div class="sv">${Object.keys(state.licenses||{}).length}</div><div class="sl">Aktif Lisans</div></div>`;
+
+  // Skills summary
+  const skills = state.skills || {};
+  const mods   = (state.modules||[]).filter(Boolean);
+  document.getElementById('prof-skills').innerHTML =
+    SKILL_IDS.map(sid => {
+      const sk  = SKILL_TREE[sid];
+      const lvl = skills[sid] || 0;
+      const bars = '★'.repeat(lvl) + '☆'.repeat(3 - lvl);
+      return `<span style="margin-right:16px">${sk.name} ${bars}</span>`;
+    }).join('') + '<br>' +
+    (mods.length
+      ? '<span style="color:#f5a623">Modüller: </span>' + mods.map(m => MODULES[m]?.icon + ' ' + MODULES[m]?.name).join(', ')
+      : '<span style="color:#555">Modül yok</span>');
+
+  // Transactions
+  try {
+    const res  = await fetch('/api/game/history', { headers: {'Authorization':'Bearer '+getToken()} });
+    const rows = await res.json();
+    const tbody = document.getElementById('prof-tx');
+    if (!rows?.length) { tbody.innerHTML = '<tr><td colspan="6" style="color:#555;text-align:center">İşlem yok</td></tr>'; return; }
+    tbody.innerHTML = rows.slice(0,20).map(r => {
+      const prod = PRODUCTS[r.product_id];
+      const ts   = new Date(r.created_at).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      return `<tr>
+        <td>${prod?.icon||''} ${prod?.name||r.product_id}</td>
+        <td class="tx-${r.action}">${r.action === 'buy' ? 'Alış' : 'Satış'}</td>
+        <td>${r.quantity} ton</td>
+        <td>${parseInt(r.price).toLocaleString('tr-TR')} TL</td>
+        <td>${r.city_id}</td>
+        <td>${ts}</td>
+      </tr>`;
+    }).join('');
+  } catch { document.getElementById('prof-tx').innerHTML = '<tr><td colspan="6" style="color:#555">Yüklenemedi</td></tr>'; }
 }
 
 // ============================================================
@@ -1411,14 +1909,16 @@ function loop(ts) {
   const now = Date.now();
 
   // Energy recharge: +1/sec when not traveling
-  if (!state.traveling && state.energy < MAX_ENERGY) {
+  const maxE = getMaxEnergy();
+  if (!state.traveling && state.energy < maxE) {
     const elapsed = (now - (state.lastEnergyTick || now)) / 1000;
-    state.energy = Math.min(MAX_ENERGY, state.energy + elapsed);
+    state.energy = Math.min(maxE, state.energy + elapsed);
   }
   state.lastEnergyTick = now;
 
-  // Economy tick
-  if (now - state.lastEcoTick >= ECO_INTERVAL) {
+  // Economy tick — faster if analiz lvl 3
+  const ecoInterval = (state.skills?.analiz >= 3) ? 30000 : ECO_INTERVAL;
+  if (now - state.lastEcoTick >= ecoInterval) {
     refreshPrices();
     state.lastEcoTick = now;
   }
@@ -1481,6 +1981,10 @@ async function init() {
     if (state.energy         === undefined) state.energy         = MAX_ENERGY;
     if (!state.lastEcoTick)  state.lastEcoTick  = Date.now();
     if (!state.lastNewsTime) state.lastNewsTime = Date.now() - NEWS_INTERVAL + 5000;
+    if (!state.skills)   state.skills   = {pazarlik:0, navigasyon:0, lojistik:0, analiz:0, diplomatik:0};
+    if (!state.modules)  state.modules  = [null, null, null];
+    if (!state.licenses) state.licenses = {};
+    if (state.homeBase   === undefined) state.homeBase = null;
     // Kapasite her zaman tier ile uyumlu olsun
     state.truckCapacity = TRUCK_TIERS[state.truckTier].cap;
     refreshPrices();
@@ -1577,3 +2081,772 @@ out = os.path.join(ROOT, 'public', 'game.html')
 with open(out, 'w', encoding='utf-8') as f:
     f.write(game_html)
 print(f"\npublic/game.html written: {os.path.getsize(out)//1024} KB")
+
+# ============================================================
+# BUILD: city-admin.html
+# ============================================================
+city_admin_html = f"""<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ticaretsim — Şehir Yönetim Merkezi</title>
+<style>
+*{{box-sizing:border-box;margin:0;padding:0}}
+body{{font-family:'Segoe UI',sans-serif;background:#0d1117;color:#fff;min-height:100vh}}
+#topbar{{background:#16213e;border-bottom:1px solid #0f3460;padding:12px 24px;display:flex;align-items:center;gap:16px}}
+#topbar h1{{font-size:16px;color:#4ecca3;flex:1}}
+.tb-btn{{background:#0f3460;border:1px solid #0f3460;color:#888;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;text-decoration:none;transition:all .2s}}
+.tb-btn:hover,.tb-btn.active{{border-color:#4ecca3;color:#4ecca3}}
+.tb-btn.red{{border-color:#e94560;color:#e94560}}
+#main{{display:grid;grid-template-columns:280px 1fr;gap:0;height:calc(100vh - 53px)}}
+#sidebar{{background:#16213e;border-right:1px solid #0f3460;overflow-y:auto;padding:16px}}
+#content{{overflow-y:auto;padding:20px}}
+/* Presidency card */
+.president-card{{background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid #f5a623;border-radius:10px;padding:16px;margin-bottom:16px;text-align:center}}
+.president-crown{{font-size:28px;margin-bottom:4px}}
+.president-title{{font-size:10px;color:#f5a623;text-transform:uppercase;letter-spacing:2px}}
+.president-name{{font-size:20px;font-weight:700;color:#fff;margin:4px 0}}
+.president-stat{{font-size:12px;color:#888}}
+/* Ranked players */
+.player-row{{display:flex;align-items:center;gap:10px;padding:8px;border-radius:6px;margin-bottom:4px;cursor:pointer;transition:background .2s}}
+.player-row:hover{{background:#0f3460}}
+.player-rank{{font-size:11px;color:#555;width:20px;text-align:center}}
+.player-name{{flex:1;font-size:13px}}
+.player-cities{{font-size:12px;color:#4ecca3}}
+/* Tabs */
+.tabs{{display:flex;border-bottom:1px solid #0f3460;margin-bottom:20px}}
+.tab{{padding:10px 20px;background:none;border:none;color:#888;cursor:pointer;font-size:13px;border-bottom:2px solid transparent;transition:all .2s}}
+.tab.active{{color:#4ecca3;border-bottom-color:#4ecca3}}
+.tab-pane{{display:none}}.tab-pane.active{{display:block}}
+/* Map view */
+#gov-map-wrap{{position:relative;background:#1a1a2e;border-radius:8px;overflow:hidden}}
+#gov-map-wrap svg{{max-width:100%;height:auto;display:block}}
+/* City table */
+.city-table{{width:100%;border-collapse:collapse;font-size:12px}}
+.city-table th{{color:#888;text-align:left;padding:8px 10px;border-bottom:1px solid #0f3460;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap}}
+.city-table td{{padding:8px 10px;border-bottom:1px solid #0a0a1a;vertical-align:middle}}
+.city-table tr:hover td{{background:#0f3460}}
+.badge{{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700}}
+.badge-me{{background:#4ecca3;color:#0d1117}}
+.badge-other{{background:#f5a623;color:#0d1117}}
+.badge-none{{background:#333;color:#888}}
+/* Auction card */
+.auc-card{{background:#2d1a1a;border:1px solid #e94560;border-radius:8px;padding:14px;margin-bottom:10px}}
+.auc-city{{font-size:15px;font-weight:700;color:#e94560;margin-bottom:4px}}
+.auc-detail{{font-size:12px;color:#888;margin-bottom:6px}}
+.auc-bid{{font-size:13px;color:#fff;margin-bottom:10px}}
+.auc-form{{display:flex;gap:8px;align-items:center}}
+.auc-input{{flex:1;background:#0d1117;border:1px solid #e94560;color:#fff;padding:7px 10px;border-radius:4px;font-size:12px}}
+.auc-btn{{background:#e94560;border:none;color:#fff;padding:7px 14px;border-radius:4px;cursor:pointer;font-size:12px}}
+/* Infra bar */
+.infra-bar{{display:flex;gap:3px}}
+.infra-dot{{width:8px;height:8px;border-radius:50%;background:#0f3460}}
+.infra-dot.on{{background:#4ecca3}}
+/* Region header */
+.region-header{{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px;padding-bottom:4px;border-bottom:1px solid #0f3460}}
+/* Toast */
+#toast{{position:fixed;bottom:20px;right:20px;background:#16213e;border:1px solid #4ecca3;color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;max-width:280px}}
+#toast.show{{opacity:1}}
+#toast.error{{border-color:#e94560;color:#e94560}}
+</style>
+</head>
+<body>
+<div id="topbar">
+  <h1>🏛️ Şehir Yönetim Merkezi</h1>
+  <span id="tb-user" style="font-size:13px;color:#4ecca3"></span>
+  <a class="tb-btn" href="/game">🎮 Oyuna Dön</a>
+  <a class="tb-btn" href="/trade-board">💼 Ticaret Panosu</a>
+  <button class="tb-btn red" onclick="logout()">Çıkış</button>
+</div>
+<div id="main">
+  <div id="sidebar">
+    <div class="president-card" id="president-card">
+      <div class="president-crown">👑</div>
+      <div class="president-title">Cumhurbaşkanı</div>
+      <div class="president-name" id="pres-name">—</div>
+      <div class="president-stat" id="pres-stat">Yükleniyor...</div>
+    </div>
+    <div class="region-header">Sıralama</div>
+    <div id="ranked-list"></div>
+  </div>
+  <div id="content">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('map')">🗺️ Harita</button>
+      <button class="tab" onclick="switchTab('cities')">🏙️ Tüm Şehirler</button>
+      <button class="tab" onclick="switchTab('mine')">⭐ Şehirlerim</button>
+      <button class="tab" onclick="switchTab('auctions')">⚔️ Müzayedeler</button>
+    </div>
+    <div id="pane-map" class="tab-pane active">
+      <div id="gov-map-wrap">
+        {svg_patched}
+        <svg id="gov-markers" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none"
+             viewBox="0 0 1052.3622 744.09448" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+      <div style="margin-top:12px;font-size:12px;color:#888;display:flex;gap:16px">
+        <span><span style="color:#4ecca3">●</span> Benim şehrim</span>
+        <span><span style="color:#f5a623">●</span> Başka oyuncu</span>
+        <span><span style="color:#555">●</span> Sahipsiz</span>
+      </div>
+    </div>
+    <div id="pane-cities" class="tab-pane">
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <input id="city-search" placeholder="Şehir ara..." style="background:#0d1117;border:1px solid #0f3460;color:#fff;padding:7px 12px;border-radius:6px;font-size:12px;flex:1"/>
+        <select id="city-filter" style="background:#0d1117;border:1px solid #0f3460;color:#fff;padding:7px 12px;border-radius:6px;font-size:12px">
+          <option value="all">Tümü</option>
+          <option value="mine">Benimkiler</option>
+          <option value="others">Başkaları</option>
+          <option value="free">Sahipsiz</option>
+        </select>
+      </div>
+      <table class="city-table">
+        <thead><tr>
+          <th>Şehir</th><th>Bölge</th><th>Sahip</th><th>Vergi</th><th>Hazine</th><th>Altyapı</th>
+        </tr></thead>
+        <tbody id="cities-tbody"></tbody>
+      </table>
+    </div>
+    <div id="pane-mine" class="tab-pane">
+      <div id="mine-content"><p style="color:#555">Sahip olduğunuz şehir yok veya yükleniyor...</p></div>
+    </div>
+    <div id="pane-auctions" class="tab-pane">
+      <div id="auctions-content"><p style="color:#555">Aktif müzayede yok.</p></div>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+<script>
+'use strict';
+{cities_js}
+
+const REGIONS = {{"Marmara":1,"Ege":1,"Akdeniz":1,"Karadeniz":1,"İç Anadolu":1,"Doğu Anadolu":1,"Güneydoğu Anadolu":1}};
+let govData = null;
+let currentUser = null;
+let activeTab = 'map';
+
+function getToken() {{ return localStorage.getItem('ts_token'); }}
+function logout() {{
+  localStorage.removeItem('ts_token');
+  localStorage.removeItem('ts_user');
+  window.location.href = '/';
+}}
+function showToast(msg, type='') {{
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (type?' '+type:'');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(()=>t.className='', 2800);
+}}
+function escapeHtml(s) {{ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }}
+
+function switchTab(name) {{
+  activeTab = name;
+  document.querySelectorAll('.tab').forEach((t,i)=>{{
+    const names = ['map','cities','mine','auctions'];
+    t.classList.toggle('active', names[i]===name);
+  }});
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pane-'+name)?.classList.add('active');
+}}
+
+async function loadGov() {{
+  try {{
+    const res = await fetch('/api/cities/governance', {{headers:{{'Authorization':'Bearer '+getToken()}}}});
+    govData = await res.json();
+    renderAll();
+  }} catch(e) {{ console.error(e); }}
+}}
+
+function renderAll() {{
+  if (!govData) return;
+  const me = currentUser;
+  // President
+  const pres = govData.president;
+  document.getElementById('pres-name').textContent = pres ? pres.name : 'Yok (şehir sahipsiz)';
+  document.getElementById('pres-stat').textContent  = pres ? pres.cities + ' şehir sahibi' : '';
+  // Ranked
+  const rl = document.getElementById('ranked-list');
+  rl.innerHTML = (govData.ranked || []).map((p,i) => `
+    <div class="player-row">
+      <div class="player-rank">#${{i+1}}</div>
+      <div class="player-name" style="color:${{me && p.id===me.id?'#4ecca3':'#fff'}}">${{escapeHtml(p.name)}}</div>
+      <div class="player-cities">${{p.cities}} şehir</div>
+    </div>`).join('');
+  renderMap();
+  renderCitiesTable();
+  renderMine();
+  renderAuctions();
+}}
+
+function renderMap() {{
+  const ms  = document.getElementById('gov-markers');
+  if (!ms) return;
+  ms.innerHTML = '';
+  const cityMap = {{}};
+  (govData.cityMap||[]).forEach(c=>cityMap[c.city_id]=c);
+  Object.entries(CITIES).forEach(([cid,city]) => {{
+    const owned = cityMap[cid];
+    const isMe  = currentUser && owned?.owner_id === currentUser.id;
+    const color = !owned ? '#333' : isMe ? '#4ecca3' : '#f5a623';
+    const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('cx', city.cx); circle.setAttribute('cy', city.cy);
+    circle.setAttribute('r','6'); circle.setAttribute('fill', color);
+    circle.setAttribute('opacity','0.8');
+    const title = document.createElementNS('http://www.w3.org/2000/svg','title');
+    title.textContent = city.name + (owned ? ' — ' + owned.owner_name : ' — Sahipsiz');
+    circle.appendChild(title);
+    ms.appendChild(circle);
+  }});
+}}
+
+function renderCitiesTable() {{
+  const cityMap = {{}};
+  (govData.cityMap||[]).forEach(c=>cityMap[c.city_id]=c);
+  const filter = document.getElementById('city-filter')?.value || 'all';
+  const search = (document.getElementById('city-search')?.value || '').toLowerCase();
+  const rows = Object.entries(CITIES).filter(([cid, city]) => {{
+    if (search && !city.name.toLowerCase().includes(search)) return false;
+    const owned = cityMap[cid];
+    if (filter==='mine'   && !(currentUser && owned?.owner_id===currentUser.id)) return false;
+    if (filter==='others' && (currentUser && owned?.owner_id===currentUser.id || !owned)) return false;
+    if (filter==='free'   && owned) return false;
+    return true;
+  }});
+  const tbody = document.getElementById('cities-tbody');
+  tbody.innerHTML = rows.map(([cid, city]) => {{
+    const d = cityMap[cid];
+    const isMe = currentUser && d?.owner_id === currentUser.id;
+    const badge = !d ? '<span class="badge badge-none">Sahipsiz</span>'
+      : isMe ? '<span class="badge badge-me">Benimki</span>'
+      : `<span class="badge badge-other">${{escapeHtml(d.owner_name)}}</span>`;
+    const infra = d ? Array.from({{length:d.infra}}, ()=>'<div class="infra-dot on"></div>').join('')
+                     + Array.from({{length:Math.max(0,12-d.infra)}}, ()=>'<div class="infra-dot"></div>').join('') : '';
+    return `<tr>
+      <td style="font-weight:600">${{city.name}}</td>
+      <td style="color:#888;font-size:11px">${{city.region}}</td>
+      <td>${{badge}}</td>
+      <td>%${{d?.tax_rate||0}}</td>
+      <td>${{d ? d.treasury.toLocaleString('tr-TR')+' TL' : '—'}}</td>
+      <td><div class="infra-bar">${{infra}}</div></td>
+    </tr>`;
+  }}).join('');
+}}
+
+function renderMine() {{
+  if (!currentUser) return;
+  const cityMap = {{}};
+  (govData.cityMap||[]).forEach(c=>cityMap[c.city_id]=c);
+  const mine = Object.entries(CITIES).filter(([cid]) => {{
+    const d = cityMap[cid];
+    return d && d.owner_id === currentUser.id;
+  }});
+  const el = document.getElementById('mine-content');
+  if (!mine.length) {{ el.innerHTML = '<p style="color:#555">Henüz şehir satın almadınız.</p>'; return; }}
+  el.innerHTML = mine.map(([cid, city]) => {{
+    const d = cityMap[cid];
+    return `<div style="background:#16213e;border:1px solid #0f3460;border-radius:8px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:16px">
+      <div style="flex:1">
+        <div style="font-size:16px;font-weight:700">${{city.name}}</div>
+        <div style="font-size:12px;color:#888">${{city.region}}</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:13px;color:#f5a623">%${{d.tax_rate||0}}</div>
+        <div style="font-size:10px;color:#555">Vergi</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:13px;color:#4ecca3">${{d.treasury.toLocaleString('tr-TR')}}</div>
+        <div style="font-size:10px;color:#555">Hazine</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:13px">⬡ ${{d.infra}}/12</div>
+        <div style="font-size:10px;color:#555">Altyapı</div>
+      </div>
+      <a class="tb-btn" href="/game" style="font-size:11px">Yönet →</a>
+    </div>`;
+  }}).join('');
+}}
+
+function renderAuctions() {{
+  const auctions = govData.auctions || [];
+  const el = document.getElementById('auctions-content');
+  if (!auctions.length) {{ el.innerHTML = '<p style="color:#555">Şu an aktif müzayede yok.</p>'; return; }}
+  el.innerHTML = auctions.map(a => {{
+    const city   = CITIES[a.city_id];
+    const rem    = Math.max(0, Math.ceil((new Date(a.ends_at)-new Date())/60000));
+    const isOver = new Date(a.ends_at) <= new Date();
+    const isMe   = currentUser && a.top_bidder_id === currentUser?.id;
+    return `<div class="auc-card">
+      <div class="auc-city">${{city?.name||a.city_id}}</div>
+      <div class="auc-detail">${{isOver ? 'Süre doldu' : rem + ' dakika kaldı'}} &bull; ${{a.trigger_type==='happiness' ? 'Halk isyanı' : 'Meydan okuma'}}</div>
+      <div class="auc-bid">En yüksek teklif: ${{a.top_bidder_name ? escapeHtml(a.top_bidder_name)+' — '+parseInt(a.top_bid).toLocaleString('tr-TR')+' TL' : 'Henüz yok'}}</div>
+      ${{!isOver ? `<div class="auc-form">
+        <input class="auc-input" id="bid-${{a.id}}" type="number" min="${{(a.top_bid||0)+1}}" placeholder="Teklif miktarı (TL)"/>
+        <button class="auc-btn" onclick="doBid(${{a.id}},'${{a.city_id}}')">Teklif Ver</button>
+      </div>` : `<button class="auc-btn" onclick="doResolve('${{a.city_id}}')">Müzayedeyi Sonuçlandır</button>`}}
+    </div>`;
+  }}).join('');
+}}
+
+async function doBid(auctionId, cityId) {{
+  const input  = document.getElementById('bid-'+auctionId);
+  const amount = parseInt(input?.value) || 0;
+  if (!amount) return showToast('Teklif girin','error');
+  const res = await fetch('/api/cities/'+cityId+'/auction/bid', {{
+    method:'POST', headers:{{'Content-Type':'application/json','Authorization':'Bearer '+getToken()}},
+    body: JSON.stringify({{amount}})
+  }});
+  const data = await res.json();
+  if (data.error) return showToast(data.error,'error');
+  showToast('Teklif verildi: '+amount.toLocaleString('tr-TR')+' TL');
+  loadGov();
+}}
+
+async function doResolve(cityId) {{
+  const res = await fetch('/api/cities/'+cityId+'/auction/resolve', {{
+    method:'POST', headers:{{'Content-Type':'application/json','Authorization':'Bearer '+getToken()}}
+  }});
+  const data = await res.json();
+  if (data.error) return showToast(data.error,'error');
+  showToast(data.result==='transferred' ? data.winner+' şehri kazandı!' : 'Değişiklik yok');
+  loadGov();
+}}
+
+document.getElementById('city-search')?.addEventListener('input', renderCitiesTable);
+document.getElementById('city-filter')?.addEventListener('change', renderCitiesTable);
+
+async function init() {{
+  const token = getToken();
+  if (!token) {{ window.location.href = '/'; return; }}
+  const raw = localStorage.getItem('ts_user');
+  currentUser = raw ? JSON.parse(raw) : null;
+  if (currentUser) document.getElementById('tb-user').textContent = currentUser.username;
+  await loadGov();
+  setInterval(loadGov, 30000);
+}}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>"""
+
+out_admin = os.path.join(ROOT, 'public', 'city-admin.html')
+with open(out_admin, 'w', encoding='utf-8') as f:
+    f.write(city_admin_html)
+print(f"public/city-admin.html written: {os.path.getsize(out_admin)//1024} KB")
+
+# ============================================================
+# BUILD: trade-board.html
+# ============================================================
+trade_board_html = f"""<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ticaretsim — Ticaret Panosu</title>
+<style>
+*{{box-sizing:border-box;margin:0;padding:0}}
+body{{font-family:'Segoe UI',sans-serif;background:#0d1117;color:#fff;min-height:100vh}}
+#topbar{{background:#16213e;border-bottom:1px solid #0f3460;padding:12px 24px;display:flex;align-items:center;gap:16px}}
+#topbar h1{{font-size:16px;color:#4ecca3;flex:1}}
+.tb-btn{{background:#0f3460;border:1px solid #0f3460;color:#888;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;text-decoration:none;transition:all .2s}}
+.tb-btn:hover{{border-color:#4ecca3;color:#4ecca3}}
+.tb-btn.red{{border-color:#e94560;color:#e94560}}
+#wrap{{max-width:1100px;margin:0 auto;padding:20px}}
+/* Create listing form */
+#create-form{{background:#16213e;border:1px solid #0f3460;border-radius:10px;padding:16px;margin-bottom:20px}}
+#create-form h3{{font-size:13px;color:#4ecca3;margin-bottom:12px}}
+.form-row{{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}}
+.form-group{{display:flex;flex-direction:column;gap:4px}}
+.form-group label{{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px}}
+.form-inp{{background:#0d1117;border:1px solid #0f3460;color:#fff;padding:8px 12px;border-radius:6px;font-size:13px;min-width:130px}}
+.form-inp:focus{{border-color:#4ecca3;outline:none}}
+.submit-btn{{background:#4ecca3;border:none;color:#0d1117;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;white-space:nowrap}}
+.submit-btn:hover{{background:#3bb89a}}
+/* Listings table */
+.section-title{{font-size:13px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:flex;align-items:center;gap:8px}}
+.listing-table{{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px}}
+.listing-table th{{color:#888;text-align:left;padding:8px 12px;border-bottom:1px solid #0f3460;font-size:11px;text-transform:uppercase;letter-spacing:1px}}
+.listing-table td{{padding:8px 12px;border-bottom:1px solid #0a0a1a;vertical-align:middle}}
+.listing-table tr:hover td{{background:#16213e}}
+.buy-btn{{background:#0f3460;border:1px solid #4ecca3;color:#4ecca3;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;transition:all .2s}}
+.buy-btn:hover{{background:#4ecca3;color:#16213e}}
+.cancel-btn{{background:#0f3460;border:1px solid #e94560;color:#e94560;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px}}
+.prod-icon{{margin-right:4px}}
+#toast{{position:fixed;bottom:20px;right:20px;background:#16213e;border:1px solid #4ecca3;color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;max-width:280px}}
+#toast.show{{opacity:1}}#toast.error{{border-color:#e94560;color:#e94560}}
+.empty-msg{{color:#555;font-size:13px;padding:20px 0}}
+</style>
+</head>
+<body>
+<div id="topbar">
+  <h1>💼 Serbest Ticaret Panosu</h1>
+  <span id="tb-user" style="font-size:13px;color:#4ecca3"></span>
+  <span id="tb-money" style="font-size:13px;color:#f5a623"></span>
+  <a class="tb-btn" href="/game">🎮 Oyuna Dön</a>
+  <a class="tb-btn" href="/city-admin">🏛️ Şehirler</a>
+  <button class="tb-btn red" onclick="logout()">Çıkış</button>
+</div>
+<div id="wrap">
+  <div id="create-form">
+    <h3>Yeni İlan Ver</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Ürün</label>
+        <select id="new-prod" class="form-inp">
+          <option value="">Seç...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Miktar (ton)</label>
+        <input id="new-qty" type="number" min="1" class="form-inp" placeholder="100"/>
+      </div>
+      <div class="form-group">
+        <label>Fiyat / ton (TL)</label>
+        <input id="new-price" type="number" min="1" class="form-inp" placeholder="5000"/>
+      </div>
+      <div class="form-group">
+        <label>Açıklama (opsiyonel şehir)</label>
+        <input id="new-city" class="form-inp" placeholder="Ör: İstanbul"/>
+      </div>
+      <button class="submit-btn" onclick="createListing()">İlan Ver</button>
+    </div>
+    <div style="font-size:11px;color:#555;margin-top:8px">Alıcı ödeme yapınca tutarı hesabınıza eklenir. İlanlar 7 gün sonra otomatik kapanır.</div>
+  </div>
+
+  <div class="section-title">📋 Aktif İlanlar <span id="listing-count" style="color:#4ecca3"></span></div>
+  <div style="display:flex;gap:8px;margin-bottom:10px">
+    <input id="search-inp" class="form-inp" placeholder="Ürün veya satıcı ara..." style="flex:1"/>
+    <select id="filter-prod" class="form-inp">
+      <option value="">Tüm ürünler</option>
+    </select>
+  </div>
+  <table class="listing-table" id="listings-table">
+    <thead><tr><th>Ürün</th><th>Miktar</th><th>Fiyat/ton</th><th>Toplam</th><th>Satıcı</th><th>Şehir</th><th>İşlem</th></tr></thead>
+    <tbody id="listings-tbody"></tbody>
+  </table>
+
+  <div class="section-title">⭐ Kendi İlanlarım</div>
+  <table class="listing-table">
+    <thead><tr><th>Ürün</th><th>Miktar</th><th>Fiyat/ton</th><th>Toplam</th><th>Şehir</th><th>İptal</th></tr></thead>
+    <tbody id="mine-tbody"></tbody>
+  </table>
+</div>
+<div id="toast"></div>
+<script>
+'use strict';
+{cities_js}
+
+const PRODUCTS_LOCAL = {{
+  bugday:'🌾 Buğday', findik:'🌰 Fındık', 'turunçgil':'🍊 Turunçgil',
+  tekstil:'👔 Tekstil', sanayi:'⚙️ Sanayi Par.', petrol:'🛢️ Ham Petrol',
+  cay:'🍵 Çay', zeytinyagi:'🫒 Zeytinyağı', kayisi:'🍑 Kayısı',
+  pamuk:'🌿 Pamuk', fistak:'🥜 Antep Fıstığı', elma:'🍎 Elma',
+  tuz:'🧂 Tuz', komur:'🪨 Kömür', mermer:'🏛️ Mermer',
+  uzum:'🍇 Kuru Üzüm', bal:'🍯 Bal', misir:'🌽 Mısır',
+  celik:'🔩 Demir/Çelik', pancar:'🌱 Şeker Pancarı'
+}};
+
+let currentUser = null;
+let allListings = [];
+
+function getToken() {{ return localStorage.getItem('ts_token'); }}
+function logout() {{
+  localStorage.removeItem('ts_token'); localStorage.removeItem('ts_user');
+  window.location.href = '/';
+}}
+function showToast(msg, type='') {{
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'show'+(type?' '+type:'');
+  clearTimeout(t._tid); t._tid = setTimeout(()=>t.className='', 2800);
+}}
+function escapeHtml(s) {{ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }}
+
+function populateProductDropdowns() {{
+  const sel = document.getElementById('new-prod');
+  const filt = document.getElementById('filter-prod');
+  Object.entries(PRODUCTS_LOCAL).forEach(([id,name]) => {{
+    sel.add(new Option(name, id));
+    filt.add(new Option(name, id));
+  }});
+}}
+
+async function loadListings() {{
+  try {{
+    const res  = await fetch('/api/trade', {{headers:{{'Authorization':'Bearer '+getToken()}}}});
+    allListings = await res.json();
+    renderListings();
+  }} catch {{ showToast('İlanlar yüklenemedi','error'); }}
+}}
+
+function renderListings() {{
+  const search = (document.getElementById('search-inp')?.value||'').toLowerCase();
+  const prod   = document.getElementById('filter-prod')?.value||'';
+  const tbody  = document.getElementById('listings-tbody');
+  const mineTbody = document.getElementById('mine-tbody');
+  const active = allListings.filter(l => l.active !== false);
+  const filtered = active.filter(l => {{
+    if (prod && l.product_id !== prod) return false;
+    if (search) {{
+      const name = (PRODUCTS_LOCAL[l.product_id]||l.product_id).toLowerCase();
+      if (!name.includes(search) && !l.seller_name.toLowerCase().includes(search)) return false;
+    }}
+    return true;
+  }});
+  const myListings = active.filter(l => currentUser && l.seller_id === currentUser.id);
+  document.getElementById('listing-count').textContent = filtered.length + ' ilan';
+
+  if (!filtered.length) {{
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-msg">Uygun ilan yok.</td></tr>';
+  }} else {{
+    tbody.innerHTML = filtered.map(l => {{
+      const isMe = currentUser && l.seller_id === currentUser.id;
+      const prod  = PRODUCTS_LOCAL[l.product_id] || l.product_id;
+      const total = parseInt(l.quantity) * parseInt(l.price_per);
+      return `<tr>
+        <td>${{prod}}</td>
+        <td>${{l.quantity}} ton</td>
+        <td>${{parseInt(l.price_per).toLocaleString('tr-TR')}} TL</td>
+        <td style="color:#f5a623">${{total.toLocaleString('tr-TR')}} TL</td>
+        <td style="color:${{isMe?'#4ecca3':'#ccc'}}">${{escapeHtml(l.seller_name)}}${{isMe?' (Sen)':''}}</td>
+        <td style="color:#888;font-size:11px">${{l.city_id||'—'}}</td>
+        <td>${{isMe ? '<span style="color:#555;font-size:11px">Kendi ilanın</span>'
+            : `<button class="buy-btn" onclick="doBuy(${{l.id}}, ${{l.quantity}})">Satın Al</button>`
+          }}</td>
+      </tr>`;
+    }}).join('');
+  }}
+
+  if (!myListings.length) {{
+    mineTbody.innerHTML = '<tr><td colspan="6" class="empty-msg">Aktif ilanınız yok.</td></tr>';
+  }} else {{
+    mineTbody.innerHTML = myListings.map(l => {{
+      const prod  = PRODUCTS_LOCAL[l.product_id] || l.product_id;
+      const total = parseInt(l.quantity) * parseInt(l.price_per);
+      return `<tr>
+        <td>${{prod}}</td>
+        <td>${{l.quantity}} ton</td>
+        <td>${{parseInt(l.price_per).toLocaleString('tr-TR')}} TL</td>
+        <td style="color:#f5a623">${{total.toLocaleString('tr-TR')}} TL</td>
+        <td style="color:#888">${{l.city_id||'—'}}</td>
+        <td><button class="cancel-btn" onclick="cancelListing(${{l.id}})">İptal</button></td>
+      </tr>`;
+    }}).join('');
+  }}
+}}
+
+async function createListing() {{
+  const product_id = document.getElementById('new-prod').value;
+  const quantity   = parseInt(document.getElementById('new-qty').value)||0;
+  const price_per  = parseInt(document.getElementById('new-price').value)||0;
+  const city_id    = document.getElementById('new-city').value.trim();
+  if (!product_id) return showToast('Ürün seçin','error');
+  if (!quantity || quantity < 1) return showToast('Geçerli miktar girin','error');
+  if (!price_per || price_per < 1) return showToast('Geçerli fiyat girin','error');
+  const res  = await fetch('/api/trade', {{
+    method:'POST',
+    headers:{{'Content-Type':'application/json','Authorization':'Bearer '+getToken()}},
+    body: JSON.stringify({{product_id, quantity, price_per, city_id}})
+  }});
+  const data = await res.json();
+  if (data.error) return showToast(data.error,'error');
+  showToast('İlan oluşturuldu!');
+  document.getElementById('new-qty').value   = '';
+  document.getElementById('new-price').value = '';
+  loadListings();
+}}
+
+async function doBuy(listingId, maxQty) {{
+  const qty = parseInt(prompt(`Kaç ton almak istiyorsunuz? (max: ${{maxQty}})`)) || 0;
+  if (!qty || qty < 1) return;
+  const res  = await fetch('/api/trade/'+listingId+'/buy', {{
+    method:'POST',
+    headers:{{'Content-Type':'application/json','Authorization':'Bearer '+getToken()}},
+    body: JSON.stringify({{quantity: Math.min(qty, maxQty)}})
+  }});
+  const data = await res.json();
+  if (data.error) return showToast(data.error,'error');
+  const prod = PRODUCTS_LOCAL[data.product_id]||data.product_id;
+  showToast(`${{prod}} ${{data.qty}} ton satın alındı! -${{data.total.toLocaleString('tr-TR')}} TL. Yeni bakiye: ${{data.newMoney?.toLocaleString('tr-TR')}} TL`);
+  // Refresh page state
+  if (data.newMoney !== undefined) document.getElementById('tb-money').textContent = data.newMoney.toLocaleString('tr-TR')+' TL';
+  loadListings();
+}}
+
+async function cancelListing(listingId) {{
+  const res  = await fetch('/api/trade/'+listingId, {{
+    method:'DELETE', headers:{{'Authorization':'Bearer '+getToken()}}
+  }});
+  const data = await res.json();
+  if (data.error) return showToast(data.error,'error');
+  showToast('İlan iptal edildi');
+  loadListings();
+}}
+
+document.getElementById('search-inp')?.addEventListener('input', renderListings);
+document.getElementById('filter-prod')?.addEventListener('change', renderListings);
+
+async function init() {{
+  const token = getToken();
+  if (!token) {{ window.location.href = '/'; return; }}
+  const raw = localStorage.getItem('ts_user');
+  currentUser = raw ? JSON.parse(raw) : null;
+  if (currentUser) document.getElementById('tb-user').textContent = currentUser.username;
+  // Load money from game state
+  try {{
+    const res = await fetch('/api/game/state',{{headers:{{'Authorization':'Bearer '+token}}}});
+    const d = await res.json();
+    if (d?.state?.money !== undefined) document.getElementById('tb-money').textContent = Math.round(d.state.money).toLocaleString('tr-TR')+' TL';
+  }} catch {{}}
+  populateProductDropdowns();
+  await loadListings();
+  setInterval(loadListings, 15000);
+}}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>"""
+
+out_trade = os.path.join(ROOT, 'public', 'trade-board.html')
+with open(out_trade, 'w', encoding='utf-8') as f:
+    f.write(trade_board_html)
+print(f"public/trade-board.html written: {os.path.getsize(out_trade)//1024} KB")
+
+# ============================================================
+# BUILD: profile.html (standalone)
+# ============================================================
+profile_html = """<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ticaretsim — Profil</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#0d1117;color:#fff;min-height:100vh}
+#topbar{background:#16213e;border-bottom:1px solid #0f3460;padding:12px 24px;display:flex;align-items:center;gap:16px}
+#topbar h1{font-size:16px;color:#4ecca3;flex:1}
+.tb-btn{background:#0f3460;border:1px solid #0f3460;color:#888;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;text-decoration:none;transition:all .2s}
+.tb-btn:hover{border-color:#4ecca3;color:#4ecca3}.tb-btn.red{border-color:#e94560;color:#e94560}
+#wrap{max-width:800px;margin:0 auto;padding:20px}
+.card{background:#16213e;border:1px solid #0f3460;border-radius:10px;padding:20px;margin-bottom:16px}
+.card h3{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat-box{background:#0d1117;border-radius:6px;padding:12px;text-align:center}
+.stat-box .sv{font-size:20px;font-weight:700;color:#4ecca3}
+.stat-box .sl{font-size:11px;color:#888;margin-top:3px}
+.skill-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #0a0a1a}
+.skill-row:last-child{border-bottom:none}
+.skill-bars{display:flex;gap:4px}
+.skill-bar{width:20px;height:5px;background:#0f3460;border-radius:2px}
+.skill-bar.on{background:#4ecca3}
+.tx-table{width:100%;border-collapse:collapse;font-size:12px}
+.tx-table th{color:#888;text-align:left;padding:7px 10px;border-bottom:1px solid #0f3460;font-size:11px;text-transform:uppercase}
+.tx-table td{padding:7px 10px;border-bottom:1px solid #0a0a1a;color:#ccc}
+.tx-buy{color:#e94560}.tx-sell{color:#4ecca3}
+</style>
+</head>
+<body>
+<div id="topbar">
+  <h1>👤 Profil</h1>
+  <a class="tb-btn" href="/game">🎮 Oyuna Dön</a>
+  <a class="tb-btn" href="/city-admin">🏛️ Şehirler</a>
+  <button class="tb-btn red" onclick="logout()">Çıkış</button>
+</div>
+<div id="wrap">
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:16px">
+      <div style="width:56px;height:56px;background:#0f3460;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px">👤</div>
+      <div>
+        <div style="font-size:22px;font-weight:700;color:#4ecca3" id="prof-name">—</div>
+        <div style="font-size:13px;color:#888" id="prof-email">—</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>İstatistikler</h3>
+    <div class="stat-grid" id="prof-stats"></div>
+  </div>
+  <div class="card">
+    <h3>Beceri Ağacı</h3>
+    <div id="prof-skills"></div>
+  </div>
+  <div class="card">
+    <h3>Son 50 İşlem</h3>
+    <table class="tx-table">
+      <thead><tr><th>Ürün</th><th>İşlem</th><th>Miktar</th><th>Fiyat</th><th>Toplam</th><th>Şehir</th><th>Tarih</th></tr></thead>
+      <tbody id="prof-tx"></tbody>
+    </table>
+  </div>
+</div>
+<script>
+function getToken() { return localStorage.getItem('ts_token'); }
+function logout() { localStorage.removeItem('ts_token'); localStorage.removeItem('ts_user'); window.location.href = '/'; }
+
+const SKILL_NAMES = {pazarlik:'🤝 Pazarlık', navigasyon:'🧭 Navigasyon', lojistik:'📦 Lojistik', analiz:'📊 Piyasa Analizi', diplomatik:'🏛️ Diplomatik'};
+const PROD_NAMES  = {bugday:'🌾 Buğday', findik:'🌰 Fındık', 'turunçgil':'🍊 Turunçgil', tekstil:'👔 Tekstil', sanayi:'⚙️ Sanayi', petrol:'🛢️ Petrol', cay:'🍵 Çay', zeytinyagi:'🫒 Zeytinyağı', kayisi:'🍑 Kayısı', pamuk:'🌿 Pamuk', fistak:'🥜 Fıstık', elma:'🍎 Elma', tuz:'🧂 Tuz', komur:'🪨 Kömür', mermer:'🏛️ Mermer', uzum:'🍇 Üzüm', bal:'🍯 Bal', misir:'🌽 Mısır', celik:'🔩 Çelik', pancar:'🌱 Pancar'};
+
+async function init() {
+  const token = getToken();
+  if (!token) { window.location.href = '/'; return; }
+  const raw = localStorage.getItem('ts_user');
+  const user = raw ? JSON.parse(raw) : null;
+  if (user) { document.getElementById('prof-name').textContent = user.username; document.getElementById('prof-email').textContent = user.email||''; }
+  try {
+    const [stateRes, histRes] = await Promise.all([
+      fetch('/api/game/state', {headers:{'Authorization':'Bearer '+token}}),
+      fetch('/api/game/history', {headers:{'Authorization':'Bearer '+token}}),
+    ]);
+    const stateData = await stateRes.json();
+    const history   = await histRes.json();
+    const s = stateData?.state || {};
+    // Stats
+    const tiers = ['🚐 Kamyonet','🚛 Kamyon','🚚 TIR'];
+    const logBonus = [0,10,20,30][s.skills?.lojistik||0];
+    const effCap = (s.truckCapacity||20) + logBonus;
+    document.getElementById('prof-stats').innerHTML = `
+      <div class="stat-box"><div class="sv">${Math.round(s.money||0).toLocaleString('tr-TR')} TL</div><div class="sl">Para</div></div>
+      <div class="stat-box"><div class="sv">${tiers[s.truckTier||0]}</div><div class="sl">Araç</div></div>
+      <div class="stat-box"><div class="sv">${effCap} ton</div><div class="sl">Kapasite</div></div>
+      <div class="stat-box"><div class="sv">${s.homeBase||'Yok'}</div><div class="sl">Ana Üs</div></div>
+      <div class="stat-box"><div class="sv">${Object.keys(s.licenses||{}).length}</div><div class="sl">Lisans</div></div>
+      <div class="stat-box"><div class="sv">${(s.modules||[]).filter(Boolean).length}</div><div class="sl">Modül</div></div>`;
+    // Skills
+    const skills = s.skills || {};
+    document.getElementById('prof-skills').innerHTML = Object.entries(SKILL_NAMES).map(([id,name]) => {
+      const lvl = skills[id]||0;
+      const bars = Array.from({length:3},(_,i)=>`<div class="skill-bar ${i<lvl?'on':''}"></div>`).join('');
+      return `<div class="skill-row">
+        <div style="flex:1;font-size:13px">${name}</div>
+        <div class="skill-bars">${bars}</div>
+        <div style="font-size:12px;color:${lvl>0?'#4ecca3':'#555'};width:60px;text-align:right">Seviye ${lvl}/3</div>
+      </div>`;
+    }).join('');
+    // Transactions
+    if (history?.length) {
+      document.getElementById('prof-tx').innerHTML = history.slice(0,50).map(r => {
+        const ts = new Date(r.created_at).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+        return `<tr>
+          <td>${PROD_NAMES[r.product_id]||r.product_id}</td>
+          <td class="tx-${r.action}">${r.action==='buy'?'Alış':'Satış'}</td>
+          <td>${r.quantity} ton</td>
+          <td>${parseInt(r.price).toLocaleString('tr-TR')} TL</td>
+          <td style="color:#f5a623">${parseInt(r.total).toLocaleString('tr-TR')} TL</td>
+          <td style="color:#888">${r.city_id}</td>
+          <td style="color:#555">${ts}</td>
+        </tr>`;
+      }).join('');
+    } else {
+      document.getElementById('prof-tx').innerHTML = '<tr><td colspan="7" style="color:#555;padding:16px">İşlem geçmişi yok.</td></tr>';
+    }
+  } catch(e) { console.error(e); }
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>"""
+
+out_profile = os.path.join(ROOT, 'public', 'profile.html')
+with open(out_profile, 'w', encoding='utf-8') as f:
+    f.write(profile_html)
+print(f"public/profile.html written: {os.path.getsize(out_profile)//1024} KB")

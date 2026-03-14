@@ -84,3 +84,19 @@ CREATE INDEX IF NOT EXISTS idx_chat_created
 -- User transactions index
 CREATE INDEX IF NOT EXISTS idx_transactions_user
   ON transactions (user_id, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS trade_listings (
+  id          SERIAL PRIMARY KEY,
+  seller_id   INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  seller_name VARCHAR(30) NOT NULL,
+  product_id  VARCHAR(20) NOT NULL,
+  quantity    INTEGER NOT NULL CHECK(quantity > 0),
+  price_per   INTEGER NOT NULL CHECK(price_per > 0),
+  city_id     VARCHAR(30) NOT NULL DEFAULT '',
+  active      BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at  TIMESTAMPTZ DEFAULT NOW(),
+  expires_at  TIMESTAMPTZ NOT NULL DEFAULT NOW() + INTERVAL '7 days'
+);
+
+CREATE INDEX IF NOT EXISTS idx_trade_active
+  ON trade_listings (active, expires_at DESC);

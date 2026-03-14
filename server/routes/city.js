@@ -116,8 +116,10 @@ router.post('/:id/claim', authMw, async (req, res) => {
     );
     if (ex.length) return res.status(400).json({ error: 'Bu şehir zaten birine ait' });
 
-    const cost = baseValue(cityId);
-    const gs   = await getGameMoney(userId);
+    const dipLvl  = Math.min(3, parseInt(req.body?.diplomaticLevel) || 0);
+    const dipDisc = [0, 0.15, 0.25, 0.35][dipLvl];
+    const cost    = Math.round(baseValue(cityId) * (1 - dipDisc));
+    const gs      = await getGameMoney(userId);
     if (!gs) return res.status(400).json({ error: 'Oyun kaydı bulunamadı' });
     if ((gs.money || 0) < cost)
       return res.status(400).json({ error: `Yeterli para yok! Gereken: ${cost.toLocaleString('tr-TR')} TL` });
@@ -424,5 +426,62 @@ router.post('/:id/auction/resolve', authMw, async (req, res) => {
     res.status(500).json({ error: 'Müzayede çözümlenemedi' });
   }
 });
+
+// ============================================================
+// GET /api/cities/governance  — presidency + regional governors
+// ============================================================
+router.get('/governance', async (_req, res) => {
+  try {
+    const { rows } = await pool.query(`
+      SELECT co.city_id, co.owner_id, co.owner_name, co.claimed_at,
+             cs.treasury, cs.tax_rate, cs.infra_storage, cs.infra_road,
+             cs.infra_market, cs.infra_factory
+      FROM city_ownership co
+      LEFT JOIN city_stats cs ON cs.city_id = co.city_id
+      WHERE co.owner_id IS NOT NULL
+    `);
+
+    // Count cities per player
+    const players = {};
+    rows.forEach(r => {
+      if (!players[r.owner_id]) {
+        players[r.owner_id] = { id: r.owner_id, name: r.owner_name, cities: 0, treasury: 0 };
+      }
+      players[r.owner_id].cities++;
+      players[r.owner_id].treasury += r.treasury || 0;
+    });
+
+    const ranked = Object.values(players).sort((a, b) => b.cities - a.cities);
+    const president = ranked[0] || null;
+
+    // Active auctions
+    const { rows: auctions } = await pool.query(`
+      SELECT id, city_id, top_bidder_name, top_bid, ends_at, trigger_type
+      FROM city_auctions WHERE resolved = FALSE ORDER BY created_at DESC
+    `);
+
+    res.json({
+      president,
+      ranked,
+      cityMap: rows.map(r => ({
+        city_id:    r.city_id,
+        owner_id:   r.owner_id,
+        owner_name: r.owner_name,
+        treasury:   r.treasury || 0,
+        tax_rate:   r.tax_rate || 0,
+        infra:      (r.infra_storage||0)+(r.infra_road||0)+(r.infra_market||0)+(r.infra_factory||0),
+      })),
+      auctions,
+    });
+  } catch (e) {
+    console.error('governance error:', e.message);
+    res.status(500).json({ error: 'Yönetim verisi yüklenemedi' });
+  }
+});
+
+// ============================================================
+// POST /api/cities/:id/claim  — updated to accept diplomaticLevel
+// ============================================================
+// (already defined above — the diplomatic discount is applied in the existing claim route)
 
 module.exports = router;

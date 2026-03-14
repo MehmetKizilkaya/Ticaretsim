@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ticaretsim — Ticaret Panosu</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#0d1117;color:#fff;min-height:100vh}
+#topbar{background:#16213e;border-bottom:1px solid #0f3460;padding:12px 24px;display:flex;align-items:center;gap:16px}
+#topbar h1{font-size:16px;color:#4ecca3;flex:1}
+.tb-btn{background:#0f3460;border:1px solid #0f3460;color:#888;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;text-decoration:none;transition:all .2s}
+.tb-btn:hover{border-color:#4ecca3;color:#4ecca3}
+.tb-btn.red{border-color:#e94560;color:#e94560}
+#wrap{max-width:1100px;margin:0 auto;padding:20px}
+/* Create listing form */
+#create-form{background:#16213e;border:1px solid #0f3460;border-radius:10px;padding:16px;margin-bottom:20px}
+#create-form h3{font-size:13px;color:#4ecca3;margin-bottom:12px}
+.form-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px}
+.form-inp{background:#0d1117;border:1px solid #0f3460;color:#fff;padding:8px 12px;border-radius:6px;font-size:13px;min-width:130px}
+.form-inp:focus{border-color:#4ecca3;outline:none}
+.submit-btn{background:#4ecca3;border:none;color:#0d1117;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;white-space:nowrap}
+.submit-btn:hover{background:#3bb89a}
+/* Listings table */
+.section-title{font-size:13px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.listing-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px}
+.listing-table th{color:#888;text-align:left;padding:8px 12px;border-bottom:1px solid #0f3460;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.listing-table td{padding:8px 12px;border-bottom:1px solid #0a0a1a;vertical-align:middle}
+.listing-table tr:hover td{background:#16213e}
+.buy-btn{background:#0f3460;border:1px solid #4ecca3;color:#4ecca3;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;transition:all .2s}
+.buy-btn:hover{background:#4ecca3;color:#16213e}
+.cancel-btn{background:#0f3460;border:1px solid #e94560;color:#e94560;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px}
+.prod-icon{margin-right:4px}
+#toast{position:fixed;bottom:20px;right:20px;background:#16213e;border:1px solid #4ecca3;color:#fff;padding:10px 16px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;max-width:280px}
+#toast.show{opacity:1}#toast.error{border-color:#e94560;color:#e94560}
+.empty-msg{color:#555;font-size:13px;padding:20px 0}
+</style>
+</head>
+<body>
+<div id="topbar">
+  <h1>💼 Serbest Ticaret Panosu</h1>
+  <span id="tb-user" style="font-size:13px;color:#4ecca3"></span>
+  <span id="tb-money" style="font-size:13px;color:#f5a623"></span>
+  <a class="tb-btn" href="/game">🎮 Oyuna Dön</a>
+  <a class="tb-btn" href="/city-admin">🏛️ Şehirler</a>
+  <button class="tb-btn red" onclick="logout()">Çıkış</button>
+</div>
+<div id="wrap">
+  <div id="create-form">
+    <h3>Yeni İlan Ver</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Ürün</label>
+        <select id="new-prod" class="form-inp">
+          <option value="">Seç...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Miktar (ton)</label>
+        <input id="new-qty" type="number" min="1" class="form-inp" placeholder="100"/>
+      </div>
+      <div class="form-group">
+        <label>Fiyat / ton (TL)</label>
+        <input id="new-price" type="number" min="1" class="form-inp" placeholder="5000"/>
+      </div>
+      <div class="form-group">
+        <label>Açıklama (opsiyonel şehir)</label>
+        <input id="new-city" class="form-inp" placeholder="Ör: İstanbul"/>
+      </div>
+      <button class="submit-btn" onclick="createListing()">İlan Ver</button>
+    </div>
+    <div style="font-size:11px;color:#555;margin-top:8px">Alıcı ödeme yapınca tutarı hesabınıza eklenir. İlanlar 7 gün sonra otomatik kapanır.</div>
+  </div>
+
+  <div class="section-title">📋 Aktif İlanlar <span id="listing-count" style="color:#4ecca3"></span></div>
+  <div style="display:flex;gap:8px;margin-bottom:10px">
+    <input id="search-inp" class="form-inp" placeholder="Ürün veya satıcı ara..." style="flex:1"/>
+    <select id="filter-prod" class="form-inp">
+      <option value="">Tüm ürünler</option>
+    </select>
+  </div>
+  <table class="listing-table" id="listings-table">
+    <thead><tr><th>Ürün</th><th>Miktar</th><th>Fiyat/ton</th><th>Toplam</th><th>Satıcı</th><th>Şehir</th><th>İşlem</th></tr></thead>
+    <tbody id="listings-tbody"></tbody>
+  </table>
+
+  <div class="section-title">⭐ Kendi İlanlarım</div>
+  <table class="listing-table">
+    <thead><tr><th>Ürün</th><th>Miktar</th><th>Fiyat/ton</th><th>Toplam</th><th>Şehir</th><th>İptal</th></tr></thead>
+    <tbody id="mine-tbody"></tbody>
+  </table>
+</div>
+<div id="toast"></div>
+<script>
+'use strict';
+const CITIES = {
+  'adana': {name:'Adana',region:'Akdeniz',cx:545.4,cy:271.8,prod:{"turunçgil": 2, "pamuk": 2, "bugday": 2},dem:{"bugday": 2, "sanayi": 2, "tekstil": 1, "misir": 1, "bal": 1}},
+  'adiyaman': {name:'Adıyaman',region:'Güneydoğu Anadolu',cx:705.5,cy:280.3,prod:{"petrol": 2, "fistak": 2},dem:{"bugday": 2, "tekstil": 1, "sanayi": 2, "elma": 1, "misir": 1}},
+  'afyonkarahisar': {name:'Afyonkarahisar',region:'Ege',cx:284.3,cy:204.2,prod:{"tekstil": 2, "turunçgil": 1, "zeytinyagi": 2, "uzum": 2, "mermer": 1},dem:{"bugday": 1, "sanayi": 1, "petrol": 2, "komur": 1, "celik": 1}},
+  'agri': {name:'Ağrı',region:'Doğu Anadolu',cx:910.7,cy:145.7,prod:{"bal": 2, "kayisi": 1},dem:{"bugday": 2, "tekstil": 2, "sanayi": 2, "cay": 1, "pamuk": 1}},
+  'aksaray': {name:'Aksaray',region:'Iç Anadolu',cx:422.1,cy:225.8,prod:{},dem:{}},
+  'amasya': {name:'Amasya',region:'Karadeniz',cx:520.2,cy:95.5,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'ankara': {name:'Ankara',region:'Iç Anadolu',cx:349.8,cy:112.6,prod:{"bugday": 2, "sanayi": 1},dem:{"sanayi": 3, "tekstil": 2, "turunçgil": 2, "cay": 2, "zeytinyagi": 1}},
+  'antalya': {name:'Antalya',region:'Akdeniz',cx:281.0,cy:330.3,prod:{"turunçgil": 3, "pamuk": 2},dem:{"bugday": 2, "sanayi": 2, "tekstil": 2, "misir": 1, "bal": 1}},
+  'ardahan': {name:'Ardahan',region:'Doğu Anadolu',cx:874.4,cy:42.7,prod:{"bal": 2, "kayisi": 1},dem:{"bugday": 2, "tekstil": 3, "sanayi": 2, "cay": 1, "pamuk": 1}},
+  'artvin': {name:'Artvin',region:'Karadeniz',cx:837.1,cy:50.5,prod:{"findik": 2, "bugday": 1, "cay": 1, "misir": 1, "komur": 1, "bal": 1},dem:{"sanayi": 1, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'aydin': {name:'Aydın',region:'Ege',cx:124.1,cy:271.7,prod:{"tekstil": 1, "turunçgil": 1, "zeytinyagi": 1, "uzum": 1, "mermer": 1},dem:{"bugday": 1, "sanayi": 1, "petrol": 2, "komur": 1, "celik": 1}},
+  'balikesir': {name:'Balıkesir',region:'Marmara',cx:106.5,cy:102.7,prod:{"sanayi": 1, "tekstil": 1, "celik": 1},dem:{"bugday": 2, "findik": 2, "turunçgil": 1, "petrol": 1, "cay": 2, "bal": 1, "fistak": 1}},
+  'bartin': {name:'Bartın',region:'Karadeniz',cx:369.8,cy:35.4,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'batman': {name:'Batman',region:'Güneydoğu Anadolu',cx:826.3,cy:250.7,prod:{"petrol": 3, "fistak": 2},dem:{"bugday": 2, "tekstil": 2, "sanayi": 2, "elma": 1, "misir": 1}},
+  'bayburt': {name:'Bayburt',region:'Karadeniz',cx:745.4,cy:119.6,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'bilecik': {name:'Bilecik',region:'Marmara',cx:217.0,cy:113.8,prod:{"sanayi": 1, "tekstil": 1, "celik": 1, "mermer": 1},dem:{"bugday": 2, "findik": 2, "turunçgil": 1, "petrol": 1, "cay": 2, "bal": 1, "fistak": 1}},
+  'bingol': {name:'Bingöl',region:'Doğu Anadolu',cx:770.6,cy:188.9,prod:{"bal": 2, "kayisi": 1},dem:{"bugday": 2, "tekstil": 3, "sanayi": 2, "cay": 1, "pamuk": 1}},
+  'bitlis': {name:'Bitlis',region:'Doğu Anadolu',cx:900.0,cy:215.1,prod:{"bal": 2, "kayisi": 1},dem:{"bugday": 2, "tekstil": 3, "sanayi": 2, "cay": 1, "pamuk": 1}},
+  'bolu': {name:'Bolu',region:'Karadeniz',cx:334.9,cy:88.9,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'burdur': {name:'Burdur',region:'Akdeniz',cx:231.2,cy:298.6,prod:{"turunçgil": 2, "pamuk": 2},dem:{"bugday": 2, "sanayi": 1, "tekstil": 1, "misir": 1, "bal": 1}},
+  'canakkale': {name:'Çanakkale',region:'Marmara',cx:53.0,cy:104.1,prod:{"sanayi": 1, "tekstil": 1, "celik": 1},dem:{"bugday": 2, "findik": 2, "turunçgil": 1, "petrol": 1, "cay": 2, "bal": 1, "fistak": 1}},
+  'cankiri': {name:'Çankırı',region:'Iç Anadolu',cx:382.8,cy:88.5,prod:{},dem:{}},
+  'corum': {name:'Çorum',region:'Karadeniz',cx:455.5,cy:72.8,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'denizli': {name:'Denizli',region:'Ege',cx:204.1,cy:253.2,prod:{"tekstil": 3, "turunçgil": 1, "zeytinyagi": 2, "uzum": 2, "mermer": 1, "pamuk": 1},dem:{"bugday": 1, "sanayi": 1, "petrol": 2, "komur": 1, "celik": 1}},
+  'diyarbakir': {name:'Diyarbakır',region:'Güneydoğu Anadolu',cx:808.9,cy:240.9,prod:{"petrol": 2, "fistak": 2},dem:{"bugday": 2, "tekstil": 2, "sanayi": 2, "elma": 1, "misir": 1}},
+  'duzce': {name:'Düzce',region:'Karadeniz',cx:294.3,cy:81.1,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'edirne': {name:'Edirne',region:'Marmara',cx:60.9,cy:26.1,prod:{"sanayi": 1, "tekstil": 1, "celik": 1},dem:{"bugday": 2, "findik": 2, "turunçgil": 1, "petrol": 1, "cay": 2, "bal": 1, "fistak": 1}},
+  'elazig': {name:'Elazığ',region:'Doğu Anadolu',cx:756.4,cy:212.0,prod:{"bal": 2, "kayisi": 1},dem:{"bugday": 2, "tekstil": 1, "sanayi": 1, "cay": 1, "pamuk": 1}},
+  'erzincan': {name:'Erzincan',region:'Doğu Anadolu',cx:747.3,cy:153.9,prod:{"bal": 2, "kayisi": 1},dem:{"bugday": 2, "tekstil": 3, "sanayi": 2, "cay": 1, "pamuk": 1}},
+  'erzurum': {name:'Erzurum',region:'Doğu Anadolu',cx:845.8,cy:88.6,prod:{"bal": 2, "kayisi": 1, "bugday": 1},dem:{"bugday": 1, "tekstil": 3, "sanayi": 3, "cay": 1, "pamuk": 1}},
+  'eskisehir': {name:'Eskişehir',region:'Iç Anadolu',cx:260.0,cy:143.7,prod:{"bugday": 2, "tekstil": 1},dem:{"sanayi": 2}},
+  'gaziantep': {name:'Gaziantep',region:'Güneydoğu Anadolu',cx:626.5,cy:327.8,prod:{"petrol": 1, "fistak": 2, "tekstil": 1},dem:{"bugday": 2, "tekstil": 2, "sanayi": 2, "elma": 1, "misir": 1, "petrol": 1}},
+  'giresun': {name:'Giresun',region:'Karadeniz',cx:665.4,cy:98.2,prod:{"findik": 3, "bugday": 1, "cay": 2, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'gumushane': {name:'Gümüşhane',region:'Karadeniz',cx:696.8,cy:104.8,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'hakkari': {name:'Hakkâri',region:'Doğu Anadolu',cx:967.7,cy:289.2,prod:{"bal": 2, "kayisi": 1},dem:{"bugday": 2, "tekstil": 3, "sanayi": 3, "cay": 1, "pamuk": 1}},
+  'hatay': {name:'Hatay',region:'Akdeniz',cx:540.9,cy:377.4,prod:{"turunçgil": 2, "pamuk": 2, "zeytinyagi": 1},dem:{"bugday": 2, "sanayi": 1, "tekstil": 1, "misir": 1, "bal": 1}},
+  'igdir': {name:'Iğdır',region:'Doğu Anadolu',cx:929.3,cy:136.8,prod:{"bal": 2, "kayisi": 1},dem:{"bugday": 2, "tekstil": 3, "sanayi": 2, "cay": 1, "pamuk": 1}},
+  'isparta': {name:'Isparta',region:'Akdeniz',cx:265.8,cy:264.4,prod:{"turunçgil": 2, "pamuk": 2, "elma": 2},dem:{"bugday": 2, "sanayi": 1, "tekstil": 1, "misir": 1, "bal": 1}},
+  'istanbul': {name:'İstanbul',region:'Marmara',cx:161.9,cy:62.3,prod:{"sanayi": 3, "tekstil": 2, "celik": 1},dem:{"bugday": 3, "findik": 3, "turunçgil": 2, "petrol": 1, "cay": 3, "bal": 2, "fistak": 2}},
+  'izmir': {name:'İzmir',region:'Ege',cx:60.8,cy:223.8,prod:{"tekstil": 2, "turunçgil": 1, "zeytinyagi": 2, "uzum": 1, "mermer": 1},dem:{"bugday": 1, "sanayi": 2, "petrol": 3, "komur": 1, "celik": 1, "findik": 2}},
+  'kahramanmaras': {name:'Kahramanmaraş',region:'Akdeniz',cx:604.1,cy:256.9,prod:{"turunçgil": 2, "pamuk": 2},dem:{"bugday": 2, "sanayi": 1, "tekstil": 1, "misir": 1, "bal": 1}},
+  'karabuk': {name:'Karabük',region:'Karadeniz',cx:380.4,cy:52.5,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'karaman': {name:'Karaman',region:'Iç Anadolu',cx:398.1,cy:324.6,prod:{},dem:{}},
+  'kars': {name:'Kars',region:'Doğu Anadolu',cx:910.5,cy:72.5,prod:{"bal": 1, "kayisi": 1, "bugday": 1},dem:{"bugday": 2, "tekstil": 2, "sanayi": 2, "cay": 1, "pamuk": 1}},
+  'kastamonu': {name:'Kastamonu',region:'Karadeniz',cx:401.4,cy:24.9,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 1, "bal": 1},dem:{"sanayi": 1, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'kayseri': {name:'Kayseri',region:'Iç Anadolu',cx:527.3,cy:210.0,prod:{"bugday": 1, "tekstil": 1},dem:{"sanayi": 2}},
+  'kilis': {name:'Kilis',region:'Güneydoğu Anadolu',cx:586.4,cy:360.9,prod:{"petrol": 1, "fistak": 2},dem:{"bugday": 2, "tekstil": 2, "sanayi": 2, "elma": 1, "misir": 1}},
+  'kirikkale': {name:'Kırıkkale',region:'Iç Anadolu',cx:411.0,cy:148.9,prod:{},dem:{}},
+  'kirklareli': {name:'Kırklareli',region:'Marmara',cx:75.1,cy:36.6,prod:{"sanayi": 1, "tekstil": 1, "celik": 1},dem:{"bugday": 2, "findik": 2, "turunçgil": 1, "petrol": 1, "cay": 2, "bal": 1, "fistak": 1}},
+  'kirsehir': {name:'Kırşehir',region:'Iç Anadolu',cx:435.3,cy:175.3,prod:{},dem:{}},
+  'kocaeli': {name:'Kocaeli',region:'Marmara',cx:230.3,cy:87.8,prod:{"sanayi": 3, "tekstil": 1, "celik": 2},dem:{"bugday": 2, "findik": 2, "turunçgil": 1, "petrol": 2, "cay": 2, "bal": 1, "fistak": 1}},
+  'konya': {name:'Konya',region:'Iç Anadolu',cx:375.0,cy:210.5,prod:{"bugday": 3, "pancar": 2, "tuz": 1},dem:{"sanayi": 2, "tekstil": 2, "findik": 2, "turunçgil": 2}},
+  'kutahya': {name:'Kütahya',region:'Ege',cx:208.1,cy:165.8,prod:{"tekstil": 2, "turunçgil": 1, "zeytinyagi": 2, "uzum": 2, "mermer": 1},dem:{"bugday": 1, "sanayi": 1, "petrol": 2, "komur": 1, "celik": 1}},
+  'malatya': {name:'Malatya',region:'Doğu Anadolu',cx:655.9,cy:217.6,prod:{"bal": 2, "kayisi": 3},dem:{"bugday": 2, "tekstil": 1, "sanayi": 2, "cay": 1, "pamuk": 1}},
+  'manisa': {name:'Manisa',region:'Ege',cx:75.1,cy:200.9,prod:{"tekstil": 1, "turunçgil": 1, "zeytinyagi": 2, "uzum": 2, "mermer": 1},dem:{"bugday": 1, "sanayi": 1, "petrol": 2, "komur": 1, "celik": 1}},
+  'mardin': {name:'Mardin',region:'Güneydoğu Anadolu',cx:785.5,cy:308.2,prod:{"petrol": 1, "fistak": 2},dem:{"bugday": 2, "tekstil": 2, "sanayi": 2, "elma": 1, "misir": 1}},
+  'mersin': {name:'Mersin',region:'Akdeniz',cx:463.6,cy:336.5,prod:{"turunçgil": 2, "pamuk": 2, "bugday": 1},dem:{"bugday": 2, "sanayi": 2, "tekstil": 1, "misir": 1, "bal": 1}},
+  'mugla': {name:'Muğla',region:'Ege',cx:88.3,cy:334.4,prod:{"tekstil": 2, "turunçgil": 1, "zeytinyagi": 2, "uzum": 2, "mermer": 2},dem:{"bugday": 1, "sanayi": 1, "petrol": 2, "komur": 1, "celik": 1}},
+  'mus': {name:'Muş',region:'Doğu Anadolu',cx:841.4,cy:201.9,prod:{"bal": 2, "kayisi": 1},dem:{"bugday": 2, "tekstil": 3, "sanayi": 2, "cay": 1, "pamuk": 1}},
+  'nevsehir': {name:'Nevşehir',region:'Iç Anadolu',cx:463.0,cy:201.8,prod:{},dem:{}},
+  'nigde': {name:'Niğde',region:'Iç Anadolu',cx:449.7,cy:269.8,prod:{"elma": 1, "tuz": 1},dem:{"sanayi": 1}},
+  'ordu': {name:'Ordu',region:'Karadeniz',cx:593.0,cy:85.0,prod:{"findik": 3, "bugday": 1, "cay": 2, "misir": 2, "komur": 1},dem:{"sanayi": 1, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'osmaniye': {name:'Osmaniye',region:'Akdeniz',cx:548.0,cy:316.4,prod:{"turunçgil": 2, "pamuk": 2},dem:{"bugday": 2, "sanayi": 1, "tekstil": 1, "misir": 1, "bal": 1}},
+  'rize': {name:'Rize',region:'Karadeniz',cx:802.6,cy:65.4,prod:{"findik": 0, "bugday": 1, "cay": 3, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1, "bugday": 1}},
+  'sakarya': {name:'Sakarya',region:'Marmara',cx:246.6,cy:74.6,prod:{"sanayi": 1, "tekstil": 1, "celik": 1},dem:{"bugday": 2, "findik": 2, "turunçgil": 1, "petrol": 1, "cay": 2, "bal": 1, "fistak": 1}},
+  'samsun': {name:'Samsun',region:'Karadeniz',cx:505.7,cy:58.6,prod:{"findik": 1, "bugday": 1, "cay": 2, "misir": 2, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'sanliurfa': {name:'Şanlıurfa',region:'Güneydoğu Anadolu',cx:700.7,cy:294.1,prod:{"petrol": 1, "fistak": 2, "pamuk": 1},dem:{"bugday": 2, "tekstil": 2, "sanayi": 2, "elma": 1, "misir": 1, "petrol": 1}},
+  'siirt': {name:'Siirt',region:'Güneydoğu Anadolu',cx:837.2,cy:271.9,prod:{"petrol": 1, "fistak": 2},dem:{"bugday": 2, "tekstil": 2, "sanayi": 2, "elma": 1, "misir": 1}},
+  'sinop': {name:'Sinop',region:'Karadeniz',cx:482.8,cy:21.3,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'sirnak': {name:'Şırnak',region:'Güneydoğu Anadolu',cx:913.4,cy:297.9,prod:{"petrol": 1, "fistak": 2},dem:{"bugday": 2, "tekstil": 2, "sanayi": 2, "elma": 1, "misir": 1}},
+  'sivas': {name:'Sivas',region:'Iç Anadolu',cx:604.3,cy:144.9,prod:{"bugday": 2},dem:{"sanayi": 2, "tekstil": 1}},
+  'tekirdag': {name:'Tekirdağ',region:'Marmara',cx:97.2,cy:57.2,prod:{"sanayi": 1, "tekstil": 1, "celik": 1},dem:{"bugday": 2, "findik": 2, "turunçgil": 1, "petrol": 1, "cay": 2, "bal": 1, "fistak": 1}},
+  'tokat': {name:'Tokat',region:'Karadeniz',cx:568.6,cy:99.3,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'trabzon': {name:'Trabzon',region:'Karadeniz',cx:709.9,cy:85.4,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 1},dem:{"sanayi": 2, "tekstil": 1, "pamuk": 1, "mermer": 1}},
+  'tunceli': {name:'Tunceli',region:'Doğu Anadolu',cx:752.0,cy:184.4,prod:{"bal": 2, "kayisi": 1},dem:{"bugday": 2, "tekstil": 3, "sanayi": 2, "cay": 1, "pamuk": 1}},
+  'usak': {name:'Uşak',region:'Ege',cx:197.4,cy:223.8,prod:{"tekstil": 2, "turunçgil": 1, "zeytinyagi": 2, "uzum": 2, "mermer": 1},dem:{"bugday": 1, "sanayi": 1, "petrol": 2, "komur": 1, "celik": 1}},
+  'van': {name:'Van',region:'Doğu Anadolu',cx:946.5,cy:186.6,prod:{"bal": 1, "kayisi": 1},dem:{"bugday": 2, "tekstil": 3, "sanayi": 2, "cay": 1, "pamuk": 1}},
+  'yalova': {name:'Yalova',region:'Marmara',cx:200.3,cy:102.4,prod:{"sanayi": 1, "tekstil": 1, "celik": 1},dem:{"bugday": 2, "findik": 2, "turunçgil": 1, "petrol": 1, "cay": 2, "bal": 1, "fistak": 1}},
+  'yozgat': {name:'Yozgat',region:'Iç Anadolu',cx:500.8,cy:145.6,prod:{},dem:{}},
+  'zonguldak': {name:'Zonguldak',region:'Karadeniz',cx:335.1,cy:51.9,prod:{"findik": 2, "bugday": 1, "cay": 2, "misir": 1, "komur": 3},dem:{"sanayi": 1, "tekstil": 1, "pamuk": 1, "mermer": 1, "bugday": 2}},
+};
+
+const PRODUCTS_LOCAL = {
+  bugday:'🌾 Buğday', findik:'🌰 Fındık', 'turunçgil':'🍊 Turunçgil',
+  tekstil:'👔 Tekstil', sanayi:'⚙️ Sanayi Par.', petrol:'🛢️ Ham Petrol',
+  cay:'🍵 Çay', zeytinyagi:'🫒 Zeytinyağı', kayisi:'🍑 Kayısı',
+  pamuk:'🌿 Pamuk', fistak:'🥜 Antep Fıstığı', elma:'🍎 Elma',
+  tuz:'🧂 Tuz', komur:'🪨 Kömür', mermer:'🏛️ Mermer',
+  uzum:'🍇 Kuru Üzüm', bal:'🍯 Bal', misir:'🌽 Mısır',
+  celik:'🔩 Demir/Çelik', pancar:'🌱 Şeker Pancarı'
+};
+
+let currentUser = null;
+let allListings = [];
+
+function getToken() { return localStorage.getItem('ts_token'); }
+function logout() {
+  localStorage.removeItem('ts_token'); localStorage.removeItem('ts_user');
+  window.location.href = '/';
+}
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'show'+(type?' '+type:'');
+  clearTimeout(t._tid); t._tid = setTimeout(()=>t.className='', 2800);
+}
+function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function populateProductDropdowns() {
+  const sel = document.getElementById('new-prod');
+  const filt = document.getElementById('filter-prod');
+  Object.entries(PRODUCTS_LOCAL).forEach(([id,name]) => {
+    sel.add(new Option(name, id));
+    filt.add(new Option(name, id));
+  });
+}
+
+async function loadListings() {
+  try {
+    const res  = await fetch('/api/trade', {headers:{'Authorization':'Bearer '+getToken()}});
+    allListings = await res.json();
+    renderListings();
+  } catch { showToast('İlanlar yüklenemedi','error'); }
+}
+
+function renderListings() {
+  const search = (document.getElementById('search-inp')?.value||'').toLowerCase();
+  const prod   = document.getElementById('filter-prod')?.value||'';
+  const tbody  = document.getElementById('listings-tbody');
+  const mineTbody = document.getElementById('mine-tbody');
+  const active = allListings.filter(l => l.active !== false);
+  const filtered = active.filter(l => {
+    if (prod && l.product_id !== prod) return false;
+    if (search) {
+      const name = (PRODUCTS_LOCAL[l.product_id]||l.product_id).toLowerCase();
+      if (!name.includes(search) && !l.seller_name.toLowerCase().includes(search)) return false;
+    }
+    return true;
+  });
+  const myListings = active.filter(l => currentUser && l.seller_id === currentUser.id);
+  document.getElementById('listing-count').textContent = filtered.length + ' ilan';
+
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-msg">Uygun ilan yok.</td></tr>';
+  } else {
+    tbody.innerHTML = filtered.map(l => {
+      const isMe = currentUser && l.seller_id === currentUser.id;
+      const prod  = PRODUCTS_LOCAL[l.product_id] || l.product_id;
+      const total = parseInt(l.quantity) * parseInt(l.price_per);
+      return `<tr>
+        <td>${prod}</td>
+        <td>${l.quantity} ton</td>
+        <td>${parseInt(l.price_per).toLocaleString('tr-TR')} TL</td>
+        <td style="color:#f5a623">${total.toLocaleString('tr-TR')} TL</td>
+        <td style="color:${isMe?'#4ecca3':'#ccc'}">${escapeHtml(l.seller_name)}${isMe?' (Sen)':''}</td>
+        <td style="color:#888;font-size:11px">${l.city_id||'—'}</td>
+        <td>${isMe ? '<span style="color:#555;font-size:11px">Kendi ilanın</span>'
+            : `<button class="buy-btn" onclick="doBuy(${l.id}, ${l.quantity})">Satın Al</button>`
+          }</td>
+      </tr>`;
+    }).join('');
+  }
+
+  if (!myListings.length) {
+    mineTbody.innerHTML = '<tr><td colspan="6" class="empty-msg">Aktif ilanınız yok.</td></tr>';
+  } else {
+    mineTbody.innerHTML = myListings.map(l => {
+      const prod  = PRODUCTS_LOCAL[l.product_id] || l.product_id;
+      const total = parseInt(l.quantity) * parseInt(l.price_per);
+      return `<tr>
+        <td>${prod}</td>
+        <td>${l.quantity} ton</td>
+        <td>${parseInt(l.price_per).toLocaleString('tr-TR')} TL</td>
+        <td style="color:#f5a623">${total.toLocaleString('tr-TR')} TL</td>
+        <td style="color:#888">${l.city_id||'—'}</td>
+        <td><button class="cancel-btn" onclick="cancelListing(${l.id})">İptal</button></td>
+      </tr>`;
+    }).join('');
+  }
+}
+
+async function createListing() {
+  const product_id = document.getElementById('new-prod').value;
+  const quantity   = parseInt(document.getElementById('new-qty').value)||0;
+  const price_per  = parseInt(document.getElementById('new-price').value)||0;
+  const city_id    = document.getElementById('new-city').value.trim();
+  if (!product_id) return showToast('Ürün seçin','error');
+  if (!quantity || quantity < 1) return showToast('Geçerli miktar girin','error');
+  if (!price_per || price_per < 1) return showToast('Geçerli fiyat girin','error');
+  const res  = await fetch('/api/trade', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+getToken()},
+    body: JSON.stringify({product_id, quantity, price_per, city_id})
+  });
+  const data = await res.json();
+  if (data.error) return showToast(data.error,'error');
+  showToast('İlan oluşturuldu!');
+  document.getElementById('new-qty').value   = '';
+  document.getElementById('new-price').value = '';
+  loadListings();
+}
+
+async function doBuy(listingId, maxQty) {
+  const qty = parseInt(prompt(`Kaç ton almak istiyorsunuz? (max: ${maxQty})`)) || 0;
+  if (!qty || qty < 1) return;
+  const res  = await fetch('/api/trade/'+listingId+'/buy', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+getToken()},
+    body: JSON.stringify({quantity: Math.min(qty, maxQty)})
+  });
+  const data = await res.json();
+  if (data.error) return showToast(data.error,'error');
+  const prod = PRODUCTS_LOCAL[data.product_id]||data.product_id;
+  showToast(`${prod} ${data.qty} ton satın alındı! -${data.total.toLocaleString('tr-TR')} TL. Yeni bakiye: ${data.newMoney?.toLocaleString('tr-TR')} TL`);
+  // Refresh page state
+  if (data.newMoney !== undefined) document.getElementById('tb-money').textContent = data.newMoney.toLocaleString('tr-TR')+' TL';
+  loadListings();
+}
+
+async function cancelListing(listingId) {
+  const res  = await fetch('/api/trade/'+listingId, {
+    method:'DELETE', headers:{'Authorization':'Bearer '+getToken()}
+  });
+  const data = await res.json();
+  if (data.error) return showToast(data.error,'error');
+  showToast('İlan iptal edildi');
+  loadListings();
+}
+
+document.getElementById('search-inp')?.addEventListener('input', renderListings);
+document.getElementById('filter-prod')?.addEventListener('change', renderListings);
+
+async function init() {
+  const token = getToken();
+  if (!token) { window.location.href = '/'; return; }
+  const raw = localStorage.getItem('ts_user');
+  currentUser = raw ? JSON.parse(raw) : null;
+  if (currentUser) document.getElementById('tb-user').textContent = currentUser.username;
+  // Load money from game state
+  try {
+    const res = await fetch('/api/game/state',{headers:{'Authorization':'Bearer '+token}});
+    const d = await res.json();
+    if (d?.state?.money !== undefined) document.getElementById('tb-money').textContent = Math.round(d.state.money).toLocaleString('tr-TR')+' TL';
+  } catch {}
+  populateProductDropdowns();
+  await loadListings();
+  setInterval(loadListings, 15000);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ticaretsim — Profil</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#0d1117;color:#fff;min-height:100vh}
+#topbar{background:#16213e;border-bottom:1px solid #0f3460;padding:12px 24px;display:flex;align-items:center;gap:16px}
+#topbar h1{font-size:16px;color:#4ecca3;flex:1}
+.tb-btn{background:#0f3460;border:1px solid #0f3460;color:#888;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;text-decoration:none;transition:all .2s}
+.tb-btn:hover{border-color:#4ecca3;color:#4ecca3}.tb-btn.red{border-color:#e94560;color:#e94560}
+#wrap{max-width:800px;margin:0 auto;padding:20px}
+.card{background:#16213e;border:1px solid #0f3460;border-radius:10px;padding:20px;margin-bottom:16px}
+.card h3{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat-box{background:#0d1117;border-radius:6px;padding:12px;text-align:center}
+.stat-box .sv{font-size:20px;font-weight:700;color:#4ecca3}
+.stat-box .sl{font-size:11px;color:#888;margin-top:3px}
+.skill-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #0a0a1a}
+.skill-row:last-child{border-bottom:none}
+.skill-bars{display:flex;gap:4px}
+.skill-bar{width:20px;height:5px;background:#0f3460;border-radius:2px}
+.skill-bar.on{background:#4ecca3}
+.tx-table{width:100%;border-collapse:collapse;font-size:12px}
+.tx-table th{color:#888;text-align:left;padding:7px 10px;border-bottom:1px solid #0f3460;font-size:11px;text-transform:uppercase}
+.tx-table td{padding:7px 10px;border-bottom:1px solid #0a0a1a;color:#ccc}
+.tx-buy{color:#e94560}.tx-sell{color:#4ecca3}
+</style>
+</head>
+<body>
+<div id="topbar">
+  <h1>👤 Profil</h1>
+  <a class="tb-btn" href="/game">🎮 Oyuna Dön</a>
+  <a class="tb-btn" href="/city-admin">🏛️ Şehirler</a>
+  <button class="tb-btn red" onclick="logout()">Çıkış</button>
+</div>
+<div id="wrap">
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:16px">
+      <div style="width:56px;height:56px;background:#0f3460;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px">👤</div>
+      <div>
+        <div style="font-size:22px;font-weight:700;color:#4ecca3" id="prof-name">—</div>
+        <div style="font-size:13px;color:#888" id="prof-email">—</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>İstatistikler</h3>
+    <div class="stat-grid" id="prof-stats"></div>
+  </div>
+  <div class="card">
+    <h3>Beceri Ağacı</h3>
+    <div id="prof-skills"></div>
+  </div>
+  <div class="card">
+    <h3>Son 50 İşlem</h3>
+    <table class="tx-table">
+      <thead><tr><th>Ürün</th><th>İşlem</th><th>Miktar</th><th>Fiyat</th><th>Toplam</th><th>Şehir</th><th>Tarih</th></tr></thead>
+      <tbody id="prof-tx"></tbody>
+    </table>
+  </div>
+</div>
+<script>
+function getToken() { return localStorage.getItem('ts_token'); }
+function logout() { localStorage.removeItem('ts_token'); localStorage.removeItem('ts_user'); window.location.href = '/'; }
+
+const SKILL_NAMES = {pazarlik:'🤝 Pazarlık', navigasyon:'🧭 Navigasyon', lojistik:'📦 Lojistik', analiz:'📊 Piyasa Analizi', diplomatik:'🏛️ Diplomatik'};
+const PROD_NAMES  = {bugday:'🌾 Buğday', findik:'🌰 Fındık', 'turunçgil':'🍊 Turunçgil', tekstil:'👔 Tekstil', sanayi:'⚙️ Sanayi', petrol:'🛢️ Petrol', cay:'🍵 Çay', zeytinyagi:'🫒 Zeytinyağı', kayisi:'🍑 Kayısı', pamuk:'🌿 Pamuk', fistak:'🥜 Fıstık', elma:'🍎 Elma', tuz:'🧂 Tuz', komur:'🪨 Kömür', mermer:'🏛️ Mermer', uzum:'🍇 Üzüm', bal:'🍯 Bal', misir:'🌽 Mısır', celik:'🔩 Çelik', pancar:'🌱 Pancar'};
+
+async function init() {
+  const token = getToken();
+  if (!token) { window.location.href = '/'; return; }
+  const raw = localStorage.getItem('ts_user');
+  const user = raw ? JSON.parse(raw) : null;
+  if (user) { document.getElementById('prof-name').textContent = user.username; document.getElementById('prof-email').textContent = user.email||''; }
+  try {
+    const [stateRes, histRes] = await Promise.all([
+      fetch('/api/game/state', {headers:{'Authorization':'Bearer '+token}}),
+      fetch('/api/game/history', {headers:{'Authorization':'Bearer '+token}}),
+    ]);
+    const stateData = await stateRes.json();
+    const history   = await histRes.json();
+    const s = stateData?.state || {};
+    // Stats
+    const tiers = ['🚐 Kamyonet','🚛 Kamyon','🚚 TIR'];
+    const logBonus = [0,10,20,30][s.skills?.lojistik||0];
+    const effCap = (s.truckCapacity||20) + logBonus;
+    document.getElementById('prof-stats').innerHTML = `
+      <div class="stat-box"><div class="sv">${Math.round(s.money||0).toLocaleString('tr-TR')} TL</div><div class="sl">Para</div></div>
+      <div class="stat-box"><div class="sv">${tiers[s.truckTier||0]}</div><div class="sl">Araç</div></div>
+      <div class="stat-box"><div class="sv">${effCap} ton</div><div class="sl">Kapasite</div></div>
+      <div class="stat-box"><div class="sv">${s.homeBase||'Yok'}</div><div class="sl">Ana Üs</div></div>
+      <div class="stat-box"><div class="sv">${Object.keys(s.licenses||{}).length}</div><div class="sl">Lisans</div></div>
+      <div class="stat-box"><div class="sv">${(s.modules||[]).filter(Boolean).length}</div><div class="sl">Modül</div></div>`;
+    // Skills
+    const skills = s.skills || {};
+    document.getElementById('prof-skills').innerHTML = Object.entries(SKILL_NAMES).map(([id,name]) => {
+      const lvl = skills[id]||0;
+      const bars = Array.from({length:3},(_,i)=>`<div class="skill-bar ${i<lvl?'on':''}"></div>`).join('');
+      return `<div class="skill-row">
+        <div style="flex:1;font-size:13px">${name}</div>
+        <div class="skill-bars">${bars}</div>
+        <div style="font-size:12px;color:${lvl>0?'#4ecca3':'#555'};width:60px;text-align:right">Seviye ${lvl}/3</div>
+      </div>`;
+    }).join('');
+    // Transactions
+    if (history?.length) {
+      document.getElementById('prof-tx').innerHTML = history.slice(0,50).map(r => {
+        const ts = new Date(r.created_at).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+        return `<tr>
+          <td>${PROD_NAMES[r.product_id]||r.product_id}</td>
+          <td class="tx-${r.action}">${r.action==='buy'?'Alış':'Satış'}</td>
+          <td>${r.quantity} ton</td>
+          <td>${parseInt(r.price).toLocaleString('tr-TR')} TL</td>
+          <td style="color:#f5a623">${parseInt(r.total).toLocaleString('tr-TR')} TL</td>
+          <td style="color:#888">${r.city_id}</td>
+          <td style="color:#555">${ts}</td>
+        </tr>`;
+      }).join('');
+    } else {
+      document.getElementById('prof-tx').innerHTML = '<tr><td colspan="7" style="color:#555;padding:16px">İşlem geçmişi yok.</td></tr>';
+    }
+  } catch(e) { console.error(e); }
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
