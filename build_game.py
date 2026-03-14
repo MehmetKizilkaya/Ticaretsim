@@ -445,7 +445,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a1a2e;color:#e0e0e0;height:1
   <button onclick="window.location='/city-admin'" style="border-color:#888;color:#888">🏛️ Şehirler</button>
   <button onclick="window.location='/trade-board'" style="border-color:#888;color:#888">💼 Pano</button>
   <button onclick="window.location='/leaderboard'" style="border-color:#888;color:#888">🏆 Lider</button>
-  <button id="btn-save" onclick="saveGame()">💾 Kaydet</button>
+  <span id="autosave-indicator" style="font-size:10px;color:#555;white-space:nowrap"></span>
   <button onclick="logout()" style="border-color:#e94560;color:#e94560">Çıkış</button>
 </div>
 
@@ -630,27 +630,55 @@ const LICENSE_IDS = Object.keys(LICENSE_CATS);
 // ============================================================
 // CITY GOVERNANCE (server-synced)
 // ============================================================
-let cityGov = {};  // cityId → {ownership, stats, auction, baseValue}
+// cityGov normalised format:
+// { owner_id, owner_name, protected_until, claimed_at,
+//   stats: { tax_rate, treasury, happiness, infra_* },
+//   auction: {...} | null,
+//   baseValue: number }
+let cityGov = {};
+
+function normaliseCityRow(r) {
+  // Flat row from GET /api/cities
+  const { city_id, owner_id, owner_name, protected_until, claimed_at,
+          tax_rate, treasury, infra_storage, infra_road, infra_market, infra_factory } = r;
+  const existing = cityGov[city_id] || {};
+  return {
+    ...existing,
+    owner_id, owner_name, protected_until, claimed_at,
+    stats: {
+      ...(existing.stats || {}),
+      tax_rate:      tax_rate      ?? existing.stats?.tax_rate      ?? 0,
+      treasury:      treasury      ?? existing.stats?.treasury      ?? 0,
+      infra_storage: infra_storage ?? existing.stats?.infra_storage ?? 0,
+      infra_road:    infra_road    ?? existing.stats?.infra_road    ?? 0,
+      infra_market:  infra_market  ?? existing.stats?.infra_market  ?? 0,
+      infra_factory: infra_factory ?? existing.stats?.infra_factory ?? 0,
+    },
+  };
+}
 
 async function loadCityGov() {
   try {
     const res = await fetch('/api/cities', { headers: authHeader() });
     if (!res.ok) return;
     const rows = await res.json();
-    rows.forEach(r => {
-      if (!cityGov[r.city_id]) cityGov[r.city_id] = {};
-      Object.assign(cityGov[r.city_id], r);
-    });
+    rows.forEach(r => { cityGov[r.city_id] = normaliseCityRow(r); });
   } catch (e) { console.warn('loadCityGov failed', e); }
 }
 
 async function loadCityDetail(cityId) {
   try {
     const res = await fetch(`/api/cities/${cityId}`, { headers: authHeader() });
-    if (!res.ok) return;
+    if (!res.ok) return null;
     const data = await res.json();
-    cityGov[cityId] = data;
-    return data;
+    // Flatten: merge ownership fields to top level
+    cityGov[cityId] = {
+      ...(data.ownership || {}),
+      stats:     data.stats,
+      auction:   data.auction,
+      baseValue: data.baseValue,
+    };
+    return cityGov[cityId];
   } catch (e) { return null; }
 }
 
@@ -675,8 +703,11 @@ async function claimCity(cityId) {
   state.money = data.newMoney;
   updateHUD();
   showToast(`🏛️ ${CITIES[cityId]?.name} satın alındı! -${data.cost.toLocaleString('tr-TR')} TL`);
-  await loadCityDetail(cityId);
+  await loadCityDetail(cityId);  // normalises and stores ownership
+  await loadCityGov();           // refresh map rings
+  updateMarkers();
   refreshCityPanel();
+  saveGame();
 }
 
 async function setTaxRate(cityId, rate) {
@@ -1862,7 +1893,18 @@ async function saveGame() {
         npcs: npcs.map(n=>({...n, traveling: n.traveling ? {...n.traveling} : null}))
       })
     });
-  } catch(e) { console.warn('Save failed', e); }
+    const ind = document.getElementById('autosave-indicator');
+    if (ind) {
+      ind.textContent = '✓ kaydedildi';
+      ind.style.color = '#4ecca3';
+      clearTimeout(ind._t);
+      ind._t = setTimeout(() => { ind.textContent = ''; }, 2500);
+    }
+  } catch(e) {
+    console.warn('Save failed', e);
+    const ind = document.getElementById('autosave-indicator');
+    if (ind) { ind.textContent = '✗ kayıt başarısız'; ind.style.color = '#e94560'; }
+  }
 }
 
 async function loadGame() {
